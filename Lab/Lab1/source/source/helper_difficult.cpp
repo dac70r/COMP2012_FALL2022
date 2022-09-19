@@ -12,10 +12,10 @@ using namespace std;
 //For elements, you may refer to element.h
 void init_monster(Monster_Map* const monster_map){
     monster_map->set_monster(2, 2, new Monster("Cooky Monstray", 10, 10000, 77, 0, 2, 2, 99990, FIRE));
-    monster_map->set_monster(2, 4, new Monster("NamelessnotFound",10000, 60, 345, 454, 4, 2, 9999, WIND));
-    monster_map->set_monster(3, 3, new Monster("Lucasjh", 1000, 34, 355, 63, 3, 3, 444, ICE));
-    monster_map->set_monster(5, 5, new Monster("YeeHong", 1, 2355, 554, 758, 5, 5, 235, THUNDER));
-    monster_map->set_monster(4, 2, new Monster("KZK4Ever", 100, 2344, 23556, 255, 2, 4, 2355, NOMRAL));
+    monster_map->set_monster(2, 4, new Monster("NamelessnotFound",1, 6, 345, 34, 4, 2, 9999, WIND));
+    monster_map->set_monster(3, 3, new Monster("Lucasjh", 1, 34, 355, 63, 3, 3, 444, ICE));
+    monster_map->set_monster(5, 5, new Monster("YeeHong", 1, 12, 554, 758, 5, 5, 235, THUNDER));
+    monster_map->set_monster(4, 2, new Monster("KZK4Ever", 10, 23, 23556, 255, 2, 4, 2355, NOMRAL));
 }
 
 //You should not add more than 10 skills for the shop.
