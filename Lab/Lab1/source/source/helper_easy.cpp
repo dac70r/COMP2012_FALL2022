@@ -10,6 +10,8 @@ using namespace std;
 
 //You should not add more monster or change the position_x or position_y, or else the program will crash.
 //For elements, you may refer to element.h
+//Monster((string) name, (int) hp of monster),(int) attack of monster, (int) skill power of monster
+//        (int) defence of monster, (int)pos_x, (int) pos_y, (int)how much coins you get for killing monster) 
 void init_monster(Monster_Map* const monster_map){
     monster_map->set_monster(2, 2, new Monster("Nasty Monkeys", 100, 0, 50, 0, 2, 2, 660, ICE));
     monster_map->set_monster(2, 4, new Monster("Green Goblin", 200, 0, 50, 0, 4, 2, 770, FIRE));
@@ -23,6 +25,8 @@ Skill** get_shop_skills(){
     Skill** shop_skills = new Skill*[SHOP_MAX_SKILLS_NUM] {
         new Skill("Fireball", 40, 30, Element::FIRE, 40),
         new Skill("Blizzard", 120, 80, Element::ICE, 200),
+        new Skill("Poison", 1200, 180, Element::ICE, 2000), // skill 1
+        new Skill("Cursed", 6666, 600, Element::ICE, 5000), // skill 2
         nullptr
     };
     return shop_skills;

@@ -11,11 +11,11 @@ using namespace std;
 //You should not add more monster or change the position_x or position_y, or else the program will crash.
 //For elements, you may refer to element.h
 void init_monster(Monster_Map* const monster_map){
-    monster_map->set_monster(2, 2, new Monster("Cooky Monstray", 10, 10000, 77, 0, 2, 2, 99990, FIRE));
-    monster_map->set_monster(2, 4, new Monster("NamelessnotFound",1, 6, 345, 34, 4, 2, 9999, WIND));
-    monster_map->set_monster(3, 3, new Monster("Lucasjh", 1, 34, 355, 63, 3, 3, 444, ICE));
-    monster_map->set_monster(5, 5, new Monster("YeeHong", 1, 12, 554, 758, 5, 5, 235, THUNDER));
-    monster_map->set_monster(4, 2, new Monster("KZK4Ever", 10, 23, 23556, 255, 2, 4, 2355, NOMRAL));
+    monster_map->set_monster(2, 2, new Monster("Cooky Monstray", 1000, 12, 77, 0, 2, 2, 1000, FIRE));
+    monster_map->set_monster(2, 4, new Monster("NamelessnotFound",2000, 64, 90, 34, 4, 2, 1099, WIND));
+    monster_map->set_monster(3, 3, new Monster("Lucasjh", 3000, 123, 77, 0, 2, 2, 4000, FIRE));
+    monster_map->set_monster(5, 5, new Monster("YeeHong", 4000, 234, 77, 0, 2, 2, 8000, FIRE));
+    monster_map->set_monster(4, 2, new Monster("KZK4Ever", 16000, 1200, 77, 0, 2, 2, 1000, FIRE));
 }
 
 //You should not add more than 10 skills for the shop.
@@ -23,6 +23,8 @@ Skill** get_shop_skills(){
     Skill** shop_skills = new Skill*[SHOP_MAX_SKILLS_NUM] {
         new Skill("Fireball", 40, 30, Element::FIRE, 40),
         new Skill("Blizzard", 120, 80, Element::ICE, 200),
+        new Skill("Poison", 390, 900, Element::WIND, 2000), // skill 1
+        new Skill("Cursed", 666, 1200, Element::THUNDER, 3000), // skill 2
         nullptr
     };
     return shop_skills;
