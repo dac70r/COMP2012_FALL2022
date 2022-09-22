@@ -2,6 +2,8 @@ CPPFLAGS = -std=c++11
 OBJS = battle.o main.o monster_map.o monster.o player.o shop.o skill.o 
 DEPS = battle.d main.d monster_map.d monster.d player.d shop.d skill.d 
 
+#Notes: make depend (Linux and MacOS)
+
 #For mac
 #all: Game_easy.out Game_difficult.out Game_impossible.out
 
