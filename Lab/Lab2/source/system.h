@@ -11,6 +11,7 @@ class Event{
     char* name;
     int minute;
 
+    
     Event(Event_Type event_type, Team_Type team_type, const char* name, int minute);
     Event(const Event& event);
     ~Event();
@@ -20,16 +21,16 @@ class Event{
 
 class Match{
     public:
-    Event* events[30];
+    Event* events[30]; // array of pointers
     int num_event = 0;
 
     char* first_country_name;
     char** first_players;
-    int num_first_players;
+    int num_first_players;//
 
     char* second_country_name;
     char** second_players;
-    int num_second_players;
+    int num_second_players;//
 
     Match(const char* first_country_name, const char* second_country_name, const char** first_players, int num_first_players, const char** second_players, int num_second_players);
     Match(const Match& match);
