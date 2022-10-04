@@ -10,6 +10,16 @@ const int STUDENT_MAX_NUM_COURSE = 10;
 
 Student::Student(const char* const name, const int student_id, const double gpa) {
     // TODO
+    this->name = new char [strlen(name)+1]; 
+    strcpy(this->name,name);
+    this->student_id = student_id; 
+    this->gpa = gpa; 
+    this->max_credit = STUDENT_INIT_MAX_CREDIT;
+    this->curr_credit = 0;
+    this->num_enrolled_course = 0;
+    this->enrolled_courses = new char* [STUDENT_MAX_NUM_COURSE];
+    this->pending_credit = 0; 
+    this->swap_list = new Swap_List;
 }
 
 Student::Student(const Student& student) {
