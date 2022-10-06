@@ -4,7 +4,8 @@
 using namespace std;
 
 Student_ListNode::Student_ListNode(const int student_id, Student_ListNode* const next) {
-    // TODO
+    this->student_id = student_id;
+    this->next = next;
 }
 
 Wait_List::Wait_List() {

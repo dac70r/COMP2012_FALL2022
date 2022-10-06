@@ -5,7 +5,9 @@
 using namespace std;
 
 Swap::Swap(const char* const original_course_name, const char* const target_course_name, Swap* const next) {
-    // TODO
+    this->original_course_name = new char [strlen(original_course_name)+1];
+    this->target_course_name = new char[strlen(target_course_name)+1];
+    this->next = nullptr;
 }
 
 Swap::~Swap() {
@@ -13,7 +15,8 @@ Swap::~Swap() {
 }
 
 Swap_List::Swap_List() {
-    // TODO
+    // The head is a pointer that points to a
+    this->head = nullptr;
 }
 
 Swap_List::Swap_List(const Swap_List& swap_list) {

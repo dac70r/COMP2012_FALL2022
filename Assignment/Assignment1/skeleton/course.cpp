@@ -6,7 +6,17 @@
 using namespace std;
 
 Course::Course(const char* const name, const int num_credit, const int course_capacity) {
-    // TODO
+    // 
+    this->name = new char [strlen(name)+1];
+    strcpy(this->name,name);
+    this->num_credit = num_credit;
+    this->capacity = course_capacity;
+    this->size = 0;
+    this->wait_list = new Wait_List;
+    
+    // Init the values inside the dynamic array to be 0.
+    this->students_enrolled = new int [course_capacity];
+    for (int k = 0;k<course_capacity;k++){this->students_enrolled[k]=0;}
 }
 
 Course::Course(const Course& course) {

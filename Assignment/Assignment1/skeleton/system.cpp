@@ -51,11 +51,45 @@ void System::admit(const char* const name, const int student_id, const double gp
 }
 
 bool System::apply_overload(const int student_id, const int request_credit) {
-    // TODO
+    //TODO
+    
 }
 
 bool System::add(const int student_id, const char* const course_name) {
-    // TODO
+    //TODO
+    // Gets course name from course_database, get the num of credits associated with that course and updates the occupany (size).
+    Course* tmp_course = this->course_database->get_course_by_name(course_name); // course 
+    int course_credit = tmp_course->get_num_credit(); // course 
+    int num_course = tmp_course->get_size(); // course
+    tmp_course->set_size(num_course+1); //course
+    int* students_enrolled_in_a_course = tmp_course->get_students_enrolled();
+    students_enrolled_in_a_course[num_course] = student_id;
+    tmp_course->set_students_enrolled(students_enrolled_in_a_course);           
+
+    // Gets the pointer to student with student id: student id and get his number of credits. 
+    // Add credit of student by num of credits associated with course as mentioned above and updates it as this is an add func. 
+    Student* tmp_student = this->student_database->get_student_by_id(student_id); // student
+    int curr_credit = tmp_student->get_curr_credit(); // student
+    curr_credit += course_credit; // student
+    tmp_student->set_curr_credit(curr_credit); //student
+
+    // Gets the number of courses student is enrolled in, add by 1 and updates it as this is an add func.
+    int num_enrolled_course = tmp_student->get_num_enrolled_course(); // student
+    num_enrolled_course += 1; //student
+    tmp_student->set_num_enrolled_course(num_enrolled_course); // student
+
+    // Gets the pointer to a list of enrolled courses by student (char**),use it to add a course to the list using new and strcpy. 
+    char** enrolled_courzez = tmp_student->get_enrolled_courses(); // student
+    enrolled_courzez[num_enrolled_course-1] = new char [strlen(course_name)+1];//student
+    strcpy(enrolled_courzez[num_enrolled_course-1],course_name);
+    // cout<<"Self-defined---> The Number of Credits is: "<<curr_credit<<endl;
+
+    // Gets the pointer to a list of enrolled students (in a course), use it to add student to the list
+    //int* enrolled_studentz = tmp_course->get_students_enrolled();
+    //enrolled_studentz[num_course-1] = student_id; // be ware of double defining the uneeded memory
+    //tmp_course->
+    //void Course::set_students_enrolled(int* const students_enrolled){
+    //this->students_enrolled = students_enrolled;
 }
 
 bool System::swap(const int student_id, const char* const original_course_name, const char* const target_course_name) {
