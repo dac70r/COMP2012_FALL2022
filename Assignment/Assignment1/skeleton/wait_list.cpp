@@ -4,12 +4,17 @@
 using namespace std;
 
 Student_ListNode::Student_ListNode(const int student_id, Student_ListNode* const next) {
+    // copy assignment for all data members from the function parameters 
     this->student_id = student_id;
     this->next = next;
 }
 
 Wait_List::Wait_List() {
     // TODO
+    this->head = nullptr;
+    this->end = nullptr;
+    
+
 }
 
 Wait_List::Wait_List(const Wait_List& wait_list) {
