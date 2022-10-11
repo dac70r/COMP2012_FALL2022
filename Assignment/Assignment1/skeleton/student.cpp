@@ -25,20 +25,30 @@ Student::Student(const char* const name, const int student_id, const double gpa)
 
 Student::Student(const Student& student) {
     // TODO
+    //cout<<"Student class copy constructor called"<<endl;
     name = new char [strlen(student.name)+1];
+    //cout<<"ok1"<<endl;
     strcpy(name,student.name);
+    //cout<<"ok1"<<endl;
     student_id = student.student_id;
+    //cout<<"ok1"<<endl;
     gpa = student.gpa;
+    //cout<<"ok1"<<endl;
     max_credit = student.max_credit;
+    //cout<<"ok1"<<endl;
     curr_credit = student.curr_credit;
+    //cout<<"ok1"<<endl;
 
     num_enrolled_course = student.num_enrolled_course;
+    //cout<<"ok1"<<endl;
     enrolled_courses = new char* [STUDENT_MAX_NUM_COURSE];
-    for (int k = 0;k<STUDENT_MAX_NUM_COURSE;k++){
+    //cout<<"ok1"<<endl;
+    for (int k = 0;k<student.get_num_enrolled_course();k++){
         enrolled_courses[k] = new char[strlen(student.enrolled_courses[k])+1];
         strcpy(enrolled_courses[k],student.enrolled_courses[k]);
+        //cout<<k<<endl;
     }
-
+    //cout<<"ok1"<<endl;
     pending_credit = student.pending_credit;
     // Copy constructor hasn't been implemented
     // C++ will give copy constructor but is shallow copy
@@ -49,6 +59,13 @@ Student::Student(const Student& student) {
 
 Student::~Student() {
     // TODO
+    //delete [] name;
+    //for(int k=0;k<STUDENT_MAX_NUM_COURSE;k++){
+    //    delete [] enrolled_courses[k];
+    //}
+    //delete enrolled_courses; 
+    // this will call the destructor for swap_list
+    //delete swap_list;
 }
 
 void Student::print_info() const {

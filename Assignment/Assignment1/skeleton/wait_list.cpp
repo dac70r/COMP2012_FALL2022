@@ -13,12 +13,13 @@ Wait_List::Wait_List() {
     // TODO
     this->head = nullptr;
     this->end = nullptr;
-    
-
 }
 
 Wait_List::Wait_List(const Wait_List& wait_list) {
     // TODO
+    // head pointing to the head of the student_listnode
+    // tail pointing to the tail of the student_listnode
+    
 }
 
 Wait_List::~Wait_List() {

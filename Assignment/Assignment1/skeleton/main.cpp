@@ -153,6 +153,9 @@ int main() {
             system->add(1000, "MATH1003");
             system->add(1000, "LANG1002A");
 
+            //debug
+            system->print_info();
+            cout<<"System debug: Finish printing system one"<<endl;
             System* system2 = new System(*system);
             system2->print_info();
             delete system2;

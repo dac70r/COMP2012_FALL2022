@@ -8,15 +8,21 @@ Student_Database::Student_Database(const int capacity) {
     this->students = new Student*[capacity];
     this->capacity = capacity;
     this->size = 0;
+    cout<<"New student database created"<<endl;
 }
 
 Student_Database::Student_Database(const Student_Database& database) {
     this->capacity = database.capacity;
+    cout<<"ok1"<<endl;
     this->size = database.size;
+    cout<<"ok1"<<endl;
     this->students = new Student*[this->capacity];
+    cout<<"ok1"<<endl;
     for(int i = 0; i < database.size; ++i) {
+        cout<<"Still okay"<<endl;
         this->students[i] = new Student(*database.students[i]);
     }
+    cout<<"Database copied"<<endl;
 }
 
 Student_Database::~Student_Database() {

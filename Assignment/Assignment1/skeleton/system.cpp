@@ -37,8 +37,10 @@ System::System(const int max_num_course, const int max_num_student) {
 }
 
 System::System(const System& system) {
-    this->course_database = new Course_Database(*system.course_database);
-    this->student_database = new Student_Database(*system.student_database);
+    //cout<<"Copy Constructor of System is called"<<endl;
+    course_database = new Course_Database(*system.course_database);//cout<<"Course_Database ok"<<endl;
+    student_database = new Student_Database(*system.student_database);//cout<<"Student_Database ok"<<endl;
+   
 }
 
 System::~System() {
@@ -52,6 +54,39 @@ void System::admit(const char* const name, const int student_id, const double gp
 
 bool System::apply_overload(const int student_id, const int request_credit) {
     //TODO
+    //Rules
+    //Students can never request more than 30 credits, meaning that a student can study 30 credits at maximum.
+    //If a student would like to overload to more than or equal to 24 credits, the student should have a GPA of at least 3.7.
+    //If a student would like to overload to more than 18 credits, the student should have a GPA of at least 3.3.
+    Student* tmp_student = this->student_database->get_student_by_id(student_id); // student
+    int curr_credit = tmp_student->get_curr_credit(); // student
+    double gpaz = tmp_student->get_gpa();
+
+    if (request_credit >= 30)
+        return false;
+
+    else if (request_credit >=24){
+        if (gpaz >= 3.7){
+            tmp_student->set_max_credit(request_credit);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    else if (request_credit > 18){
+        if (gpaz >= 3.3){
+            tmp_student->set_max_credit(request_credit);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    else
+        return false;
+
+        
     
 }
 
@@ -90,6 +125,7 @@ bool System::add(const int student_id, const char* const course_name) {
     //tmp_course->
     //void Course::set_students_enrolled(int* const students_enrolled){
     //this->students_enrolled = students_enrolled;
+    //cout<<"called add"<<endl;
 }
 
 bool System::swap(const int student_id, const char* const original_course_name, const char* const target_course_name) {
@@ -107,6 +143,7 @@ void System::add_course(const char* const name, const int num_credit, const int 
 void System::print_info() const {
     this->course_database->print_all_course();
     this->student_database->print_all_students();
+    
 }
 
 Course_Database* System::get_course_database() const {

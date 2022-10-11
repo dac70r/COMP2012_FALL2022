@@ -41,6 +41,9 @@ Course::Course(const Course& course) {
 
 Course::~Course() {
     // TODO
+    //delete [] name;
+    //delete wait_list;
+   // delete [] students_enrolled;
 }
 
 void Course::print_info() const {
