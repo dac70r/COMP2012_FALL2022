@@ -21,11 +21,13 @@ Swap_List::Swap_List() {
     // The head is a pointer that points to head of linked list
     // containing swaps 
     this->head = nullptr;
+    
 }
 
 Swap_List::Swap_List(const Swap_List& swap_list) {
     // TODO
     // to be implemented after creating linked list 
+
 }
 
 Swap_List::~Swap_List() {

@@ -92,18 +92,64 @@ bool System::apply_overload(const int student_id, const int request_credit) {
 
 bool System::add(const int student_id, const char* const course_name) {
     //TODO
-    // Gets course name from course_database, get the num of credits associated with that course and updates the occupany (size).
-    Course* tmp_course = this->course_database->get_course_by_name(course_name); // course 
-    int course_credit = tmp_course->get_num_credit(); // course 
-    int num_course = tmp_course->get_size(); // course
+    // Creates a tmp_course and tmp_student
+    Course* tmp_course = this->course_database->get_course_by_name(course_name); // course object
+    Student* tmp_student = this->student_database->get_student_by_id(student_id); // student object
+    int course_credit = tmp_course->get_num_credit(); // get the number of credits of a course 
+    int num_course = tmp_course->get_size(); // get the size of a course 
+
+    // Before doing anything, enforce the worst case credit control policy
+    // curr_credit + pending_credit =< max_credit
+
+
+    // Check if course has vacancies, if yes enroll student, if no add the student to the
+    // wait list
+    int vacancy = tmp_course->get_capacity() - tmp_course->get_size();
+    Wait_List* waiting_list = tmp_course->get_wait_list();
+    
+    if (vacancy == 0){
+        //cout<<"No vacancy liao"<<endl;
+        // if vacancy is 0 we create a node with student id and next = nullptr
+        // Student_ListNode* node_student = new Student_ListNode(student_id, nullptr);
+        Student_ListNode* head = waiting_list->get_head();
+
+        if(head == nullptr){
+            Student_ListNode* node_student = new Student_ListNode(student_id, nullptr);
+            waiting_list->set_head(node_student);
+            waiting_list->set_end(node_student);
+            tmp_course->set_wait_list(waiting_list);
+        }
+
+        else{
+            // Rules to adding items to wait_list: head link up with second // end point to second
+
+            // creating a new node to store any waitlist information
+            Student_ListNode* another_node = new Student_ListNode(student_id, nullptr); 
+            Student_ListNode* ptr = head;
+            //end pointer now points to another_node
+            waiting_list->set_end(another_node);
+            // Code to traverse the linked list
+            while(ptr->next!=NULL){
+                ptr = ptr->next;
+            }
+            // finally when we reach the end, we link zem together 
+            ptr->next = another_node;
+            // then we need to set_wait_list to "save" changes`
+            tmp_course->set_wait_list(waiting_list);
+        }
+    }
+
+    // update the corresponding data members of the student and course. Return true. 
+    else{
+
     tmp_course->set_size(num_course+1); //course
     int* students_enrolled_in_a_course = tmp_course->get_students_enrolled();
-    students_enrolled_in_a_course[num_course] = student_id;
+    students_enrolled_in_a_course[num_course] = student_id; // 2 -> 3rd entry no worries 
     tmp_course->set_students_enrolled(students_enrolled_in_a_course);           
 
     // Gets the pointer to student with student id: student id and get his number of credits. 
     // Add credit of student by num of credits associated with course as mentioned above and updates it as this is an add func. 
-    Student* tmp_student = this->student_database->get_student_by_id(student_id); // student
+    
     int curr_credit = tmp_student->get_curr_credit(); // student
     curr_credit += course_credit; // student
     tmp_student->set_curr_credit(curr_credit); //student
@@ -126,6 +172,9 @@ bool System::add(const int student_id, const char* const course_name) {
     //void Course::set_students_enrolled(int* const students_enrolled){
     //this->students_enrolled = students_enrolled;
     //cout<<"called add"<<endl;
+    }
+    
+    return true;
 }
 
 bool System::swap(const int student_id, const char* const original_course_name, const char* const target_course_name) {
@@ -134,6 +183,52 @@ bool System::swap(const int student_id, const char* const original_course_name, 
 
 void System::drop(const int student_id, const char* const course_name) {
     // TODO
+    /*Drop the student from the course. Update the corresponding class data members of the student. 
+    You should delete the dynamically allocated memory corresponding to the dropped course name 
+    in enrolled_courses for the dropped student.*/
+
+    // 3 things: size of course -1 , num_of_course take by students - 1, delete char name 
+    Course* tmp_course = this->course_database->get_course_by_name(course_name); // course
+    Student* tmp_student = this->student_database->get_student_by_id(student_id); // student 
+    int course_credit = tmp_course->get_num_credit(); // course credit  
+    int num_course = tmp_course->get_size(); // course size (how many people currently enrolled)
+
+    int tmp_student_for_replace; // 
+    int index = 0; // the index of the student_id to be deleted 
+    int* students_enrolled_in_a_course = tmp_course->get_students_enrolled();
+    tmp_student_for_replace = students_enrolled_in_a_course[num_course-1]; // last entry 
+
+    for (int k=0; k<num_course; k++){
+        if (students_enrolled_in_a_course[k] == student_id)
+        {
+            index = k;
+        }
+    }
+    students_enrolled_in_a_course[index] = tmp_student_for_replace; // replacing array 
+    tmp_course->set_size(num_course-1); // setting the size to size-1 
+    
+    int curr_credit = tmp_student->get_curr_credit(); // student
+    curr_credit -= course_credit; // student
+    tmp_student->set_curr_credit(curr_credit); //student
+
+    // Gets the number of courses student is enrolled in, add by 1 and updates it as this is an add func.
+    int num_enrolled_course = tmp_student->get_num_enrolled_course(); // student
+    num_enrolled_course -= 1; //student
+    tmp_student->set_num_enrolled_course(num_enrolled_course); // student
+
+    // Gets the pointer to a list of enrolled courses by student (char**),use it to add a course to the list using new and strcpy. 
+    char** enrolled_courzez = tmp_student->get_enrolled_courses(); // student
+    for (int k=0; k<num_course; k++){
+        if (strcmp(enrolled_courzez[k],course_name)==0)
+        {
+            delete [] enrolled_courzez;
+            index = k;
+        }
+    }
+    enrolled_courzez[index] =  enrolled_courzez[num_course-1];
+    //enrolled_courzez[num_enrolled_course-1] = new char [strlen(course_name)+1];//student
+    //strcpy(enrolled_courzez[num_enrolled_course-1],course_name);
+
 }
 
 void System::add_course(const char* const name, const int num_credit, const int course_capacity) {

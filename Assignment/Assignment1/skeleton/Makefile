@@ -10,4 +10,4 @@ pa1.out: $(OBJECTS)
 	g++ $(CPPFLAGS) -c $< -o $@
 
 clean:
-	rm  -f  *.o *.out
+	rm  -f  *.o *.out *.zip
