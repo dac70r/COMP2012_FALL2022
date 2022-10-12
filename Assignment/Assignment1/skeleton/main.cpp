@@ -251,7 +251,9 @@ int main() {
             system->add(1005, "COMP2012");  // Student 1005 gets into the wait list of COMP2012
             system->add(1006, "COMP2012");  // Student 1006 gets into the wait list of COMP2012
 
-            system->drop(1001, "COMP2012"); // Student 1001 drops, student 1003 should get into COMP2012
+            system->drop(1000, "COMP2012"); // Student 1001 drops, student 1003 should get into COMP2012
+           // system->drop(1001, "COMP2012");
+           // system->drop(1002, "COMP2012");
 
             system->print_info();
             delete system;
