@@ -22,12 +22,26 @@ Course::Course(const char* const name, const int num_credit, const int course_ca
 Course::Course(const Course& course) {
     // TODO
     // Perform deep copy of all data members 
-    name = new char [strlen(course.name)+1];
+    /*
+    char* name;
+    int num_credit;
+    int capacity;
+    int size;
+    Wait_List* wait_list;
+    int* students_enrolled;
+    */
+    name = new char [strlen(course.name)+1]; // char data member 
     strcpy(name,course.name);
     //
     num_credit = course.num_credit;
     capacity = course.capacity;
     size = course.size;
+    Wait_List* waiting_list = course.get_wait_list();
+    Student_ListNode* ptr = waiting_list->get_head();
+    while(ptr->next!=NULL){
+        Student_ListNode* new_student = new Student_ListNode(ptr->student_id,nullptr);
+        ptr = ptr->next;
+    }
     wait_list = new Wait_List;
     // This is shallow copy, will lead to undefined behaviour
     wait_list = course.wait_list; 

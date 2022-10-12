@@ -201,12 +201,12 @@ void System::drop(const int student_id, const char* const course_name) {
     int curr_credit = tmp_student->get_curr_credit(); // student 
     int vacancy = tmp_course->get_capacity() - tmp_course->get_size(); // get the vacancy of a course 
 
-    // Student ID Replace operation
-    int tmp_student_for_replace; // 
+    // Student ID Replace Operation
+    int tmp_student_for_replace; // the last student id in the course  
     int index = 0; // the index of the student_id to be deleted 
-    int* students_enrolled_in_a_course = tmp_course->get_students_enrolled();
-    tmp_student_for_replace = students_enrolled_in_a_course[num_course-1]; // last entry 
-
+    int* students_enrolled_in_a_course = tmp_course->get_students_enrolled(); // get list of student id 
+    tmp_student_for_replace = students_enrolled_in_a_course[num_course-1]; // last entry put into vessel  
+    
     // find out the index of the student who drop the course 
     for (int k=0; k<num_course; k++){
         if (students_enrolled_in_a_course[k] == student_id)
@@ -214,59 +214,78 @@ void System::drop(const int student_id, const char* const course_name) {
             index = k;
         }
     }
-    
-    students_enrolled_in_a_course[index] = tmp_student_for_replace; // replacing array 
-    students_enrolled_in_a_course[num_course-1] = 0;
-    tmp_course->set_students_enrolled(students_enrolled_in_a_course);
-    tmp_course->set_size(num_course-1); // setting the size to size-1 
-    
-    // Updating other data members 
-    curr_credit -= course_credit; // student
-    tmp_student->set_curr_credit(curr_credit); //student
-
-    // Gets the number of courses student is enrolled in, add by 1 and updates it as this is an add func.
-    int num_enrolled_course = tmp_student->get_num_enrolled_course(); // student
-    num_enrolled_course -= 1; //student
-    tmp_student->set_num_enrolled_course(num_enrolled_course); // student
-
-    // Gets the pointer to a list of enrolled courses by student (char**),use it to add a course to the list using new and strcpy. 
-    /*
-    char** enrolled_courzez = tmp_student->get_enrolled_courses(); // student
-    for (int k=0; k<num_course; k++){
-        if (strcmp(enrolled_courzez[k],course_name)==0)
-        {
-            delete [] enrolled_courzez;
-            index = k;
-        }
-    }
-    enrolled_courzez[index] =  enrolled_courzez[num_course-1];*/
-    //enrolled_courzez[num_enrolled_course-1] = new char [strlen(course_name)+1];//student
-    //strcpy(enrolled_courzez[num_enrolled_course-1],course_name);
-
-    // Before returning, we have to check if there are vacancies in the course
-    // append the first in the waiting list to the
-    // taking baby steps: only add 1 
-    // vacancy must be checked after dropped
-    // if drop is called and wait_list is not empty, insert student id of immediate waitlisted to 
-    // fill the dropped vacancy (no according to order)
-    vacancy = tmp_course->get_capacity() - tmp_course->get_size(); // get the vacancy of a course 
+    // need to check if there are people on the waitlist first
     Wait_List* waiting_list = tmp_course->get_wait_list(); // get the wait_list to a course 
-    if (vacancy > 0)
-    {
-        waiting_list->print_list();
+
+    /* If head is nullptr meadning no people on the waitlist: we can proceed to replace with existing */
+    if (waiting_list->get_head() == nullptr){
+        // drop -> replace with existing course 
+        students_enrolled_in_a_course[index] = tmp_student_for_replace; // replacing array 
+        students_enrolled_in_a_course[num_course-1] = 0;
+        tmp_course->set_students_enrolled(students_enrolled_in_a_course);
+        tmp_course->set_size(num_course-1); // setting the size to size-1 
+
+        // Changing the data member of the added student
+        
+        tmp_course->set_students_enrolled(students_enrolled_in_a_course); 
+
+        // Updating other data members 
+        curr_credit -= course_credit; // student
+        tmp_student->set_curr_credit(curr_credit); //student
+
+        // Gets the number of courses student is enrolled in, add by 1 and updates it as this is an add func.
+        int num_enrolled_course = tmp_student->get_num_enrolled_course(); // student
+        num_enrolled_course -= 1; //student
+        tmp_student->set_num_enrolled_course(num_enrolled_course); // student
+    
+        
+    }
+
+    /* If there are people in the waitlist we proceed to replace with waitlisted */
+    else{
+        // Before returning, we have to check if there are vacancies in the course
+        // append the first in the waiting list to the
+        // taking baby steps: only add 1 
+        // vacancy must be checked after dropped
+        // if drop is called and wait_list is not empty, insert student id of immediate waitlisted to 
         Student_ListNode* first_node = waiting_list->get_head();
         Student_ListNode* head = waiting_list->get_head();
-        Student_ListNode* tmp;
-        tmp = head;
+        Student_ListNode* tmp; // carefull here
         head = head->next;
+        first_node->next = nullptr;
         waiting_list->set_head(head);
-        //delete tmp;
-        add(first_node->student_id,course_name);
-        // must update waiting list
-        tmp_course->set_wait_list(waiting_list);
-    }
-    
 
+        // replacing part and updating data member of new entry
+        students_enrolled_in_a_course[index] = first_node->student_id; // replacing array 
+        
+        Student* tmp_student_new = this->student_database->get_student_by_id(first_node->student_id);
+        
+        //update curr credit of new entry
+        int curr_credit_new = tmp_student_new->get_curr_credit();
+        tmp_student_new->set_curr_credit(curr_credit_new+course_credit);
+
+        //update num courses of new entry 
+        int num_courses_new = tmp_student_new->get_num_enrolled_course();
+        tmp_student_new->set_num_enrolled_course(num_courses_new+1);
+
+        tmp_course->set_students_enrolled(students_enrolled_in_a_course);
+
+        
+        // Updating other data members 
+        curr_credit -= course_credit; // student
+        tmp_student->set_curr_credit(curr_credit); //student
+
+        // Gets the number of courses student is enrolled in, add by 1 and updates it as this is an add func.
+        int num_enrolled_course = tmp_student->get_num_enrolled_course(); // student
+        num_enrolled_course -= 1; //student
+        tmp_student->set_num_enrolled_course(num_enrolled_course); // student
+
+        // delete node 
+        delete first_node;
+        // update waiting list
+        tmp_course->set_wait_list(waiting_list);
+
+    }    
 }
 
 void System::add_course(const char* const name, const int num_credit, const int course_capacity) {
