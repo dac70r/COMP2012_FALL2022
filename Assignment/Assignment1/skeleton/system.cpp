@@ -85,9 +85,6 @@ bool System::apply_overload(const int student_id, const int request_credit) {
 
     else
         return false;
-
-        
-    
 }
 
 bool System::add(const int student_id, const char* const course_name) {
