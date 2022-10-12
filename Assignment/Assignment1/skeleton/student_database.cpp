@@ -55,7 +55,9 @@ Student* Student_Database::get_student_by_id(const int student_id) const {
 // Helper function for debugging
 void Student_Database::print_all_students() const {
     cout << "PRINTING ALL STUDENT INFORMATION: " << endl;
+    //cout << "There are a total of "<<
     for(int i = 0; i < this->size; ++i) {
+        //cout<<"details of student"<<endl;
         this->students[i]->print_info();
         cout << endl;
     }
