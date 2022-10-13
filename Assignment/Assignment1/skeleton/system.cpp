@@ -142,46 +142,44 @@ bool System::add(const int student_id, const char* const course_name){
         return true;
     }
 
-    // update the corresponding data members of the student and course. Return true. 
     else if (tmp_course->get_capacity() - tmp_course->get_size() > 0){
-    //cout<<"Capacity: "<<tmp_course->get_capacity() - tmp_course->get_size() <<endl;
-    //cout<<"Got vacancy, adding 1 student to course"<<endl;
+        
+        if(tmp_student->get_pending_credit() == 0){
+            int* students_enrolled_in_a_course = tmp_course->get_students_enrolled();
+            students_enrolled_in_a_course[tmp_course->get_size()] = student_id; 
+            // course side changes 
+            tmp_course->set_size(tmp_course->get_size()+1); 
+            tmp_course->set_students_enrolled(students_enrolled_in_a_course);
 
-    int* students_enrolled_in_a_course = tmp_course->get_students_enrolled();
-    students_enrolled_in_a_course[tmp_course->get_size()] = student_id; 
-    // course side changes 
-    tmp_course->set_size(tmp_course->get_size()+1); 
-    tmp_course->set_students_enrolled(students_enrolled_in_a_course);
-    //don't change the student's     
-    /*
-    for (int k =0; k<tmp_course->get_size();k++)
-    {
-        cout<<students_enrolled_in_a_course[k]<<" ";
-
-    }
-    cout<<""<<endl;
-    */
-    
-
-    // Add course to list of enrolled course by student 
-    char** enrolled_courzez = tmp_student->get_enrolled_courses(); 
-    enrolled_courzez[tmp_student->get_num_enrolled_course()] = new char [strlen(course_name)+1];//student
-    strcpy(enrolled_courzez[tmp_student->get_num_enrolled_course()],course_name);
-    tmp_student->set_enrolled_courses(enrolled_courzez);
-
-    // Update other data members of student 
-    tmp_student->set_curr_credit(tmp_student->get_curr_credit()+tmp_course->get_num_credit()); //student
-    int num_of_enrolled_courses = tmp_student->get_num_enrolled_course();
-    tmp_student->set_num_enrolled_course(num_of_enrolled_courses+1);
-    //cout<<"No of enrolled courses by this student is "<<tmp_student->get_num_enrolled_course()<<endl; 
+            // Add course to list of enrolled course by student 
+            char** enrolled_courzez = tmp_student->get_enrolled_courses(); 
+            enrolled_courzez[tmp_student->get_num_enrolled_course()] = new char [strlen(course_name)+1];//student
+            strcpy(enrolled_courzez[tmp_student->get_num_enrolled_course()],course_name);
+            tmp_student->set_enrolled_courses(enrolled_courzez);
+            //cout<<"debug"<<endl;
+            // Update other data members of student 
+            tmp_student->set_curr_credit(tmp_student->get_curr_credit()+tmp_course->get_num_credit()); //student
+            int num_of_enrolled_courses = tmp_student->get_num_enrolled_course();
+            tmp_student->set_num_enrolled_course(num_of_enrolled_courses+1);
+            //cout<<"No of enrolled courses by this student is "<<tmp_student->get_num_enrolled_course()<<endl;
+            return true;
+        }
+        // got in with pending credits, which means dropped then added
+        else{
+            // no need to update student id list in course, already implemented in drop 
+            //cout<<"debug"<<endl;
+            //tmp_student->set_pending_credit(tmp_student->get_pending_credit() - tmp_course->get_num_credit());
+            tmp_course->set_size(tmp_course->get_size()+1);
+            return true;
+        }
 
     // Set Pending Credit of Student
     // if pending credit == 0 then no need to do anything, but if got pending credit
     // this means the student got in the waitlist before, need to minus the course credit 
-    if(tmp_student->get_pending_credit()!=0){
-        tmp_student->set_pending_credit(tmp_student->get_pending_credit() - tmp_course->get_num_credit());
-    }
-        return true;
+    //if(tmp_student->get_pending_credit()>0){
+    //    tmp_student->set_pending_credit(tmp_student->get_pending_credit() - tmp_course->get_num_credit());
+    //}
+        
     }
 
     else
@@ -224,6 +222,7 @@ void System::drop(const int student_id, const char* const course_name) {
     Student_ListNode* next_on_the_list_id = waiting_list->get_head();
     char** enrolled_courzez_delete = tmp_student->get_enrolled_courses();
     int copy_next_on_the_list_id = 0;
+    int big_big_senior = 0;
 
     // for loop to find out the index of the student who drop the course 
     int* list_of_student_id_of_enrolled_students = tmp_course->get_students_enrolled();
@@ -233,9 +232,10 @@ void System::drop(const int student_id, const char* const course_name) {
             
             // Which means got wait_list
             if(next_on_the_list_id != nullptr){
-                
-                list_of_student_id_of_enrolled_students[k] = next_on_the_list_id->student_id;
-                //remove 
+                copy_next_on_the_list_id = next_on_the_list_id->student_id; // store in student id 
+                //cout<<copy_next_on_the_list_id<<endl;
+                list_of_student_id_of_enrolled_students[k] = next_on_the_list_id->student_id; // Replace
+                //int last_student_id = list_of_student_id_of_enrolled_students[tmp_course->get_size()-1]; // last 
                 Student_ListNode* tmp = next_on_the_list_id; // temp = head
                 next_on_the_list_id = next_on_the_list_id->next;
                 //cout<<"next_on_the_list"<<copy_next_on_the_list_id<<endl;
@@ -244,13 +244,23 @@ void System::drop(const int student_id, const char* const course_name) {
 
                 waiting_list->set_head(next_on_the_list_id);
                 tmp_course->set_wait_list(waiting_list);
+                tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
+                tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
                 //copy_next_on_the_list_id = next_on_the_list_id->student_id;
+
+                //Updating the student that was waitlisted
+                tmp_course->set_size(tmp_course->get_size()-1);
+                
+                //cout<<tmp_course->get_size()<<endl;
+                cout<<next_on_the_list_id->student_id<<endl;
+                add(copy_next_on_the_list_id,course_name);
             }
 
             else{
             list_of_student_id_of_enrolled_students[k] = list_of_student_id_of_enrolled_students[tmp_course->get_size()-1];
             tmp_course->set_size(tmp_course->get_size()-1);
             tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
+            //tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
             //list_of_student_id_of_enrolled_students[num_course-1] = 0; if 4 = (5-1) -> 4 = 0 no good 
             }
         }        
@@ -265,19 +275,18 @@ void System::drop(const int student_id, const char* const course_name) {
     
     for (int k=0; k<tmp_student->get_num_enrolled_course(); k++){
         if (strcmp(enrolled_courzez_delete[k],course_name)==0){
-            //if (copy_next_on_the_list_id){
-                //indexes = k;
-                //cout<<"I want to drop "<<course_name<<endl;
-                //cout<<"Index is "<<indexes<<endl;
-                char* tmp_name = new char [strlen(enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1])+1];
-                strcpy(tmp_name,enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1]);
-                //cout<<tmp_name<<endl;
-
-                // cannot delete pointer from here so we will strcpy nothing to it-> memory leak  
-
-                strcpy(enrolled_courzez_delete[k],tmp_name);
+            //if(copy_next_on_the_list_id){
+            //}
+            //else{
+                char* head = enrolled_courzez_delete[k];
+                char* chad_name = new char [strlen(enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1])+1];
+                strcpy(chad_name, enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1]);
+                //cout<<chad_name<<endl;
+                // cannot delete pointer from here so we will strcpy nothing to it-> memory leak               
+                strcpy(enrolled_courzez_delete[k],chad_name);
                 tmp_student->set_enrolled_courses(enrolled_courzez_delete);
-                tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
+                //tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
+            //}
         } 
     }
    
