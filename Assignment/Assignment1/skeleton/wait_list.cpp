@@ -18,14 +18,42 @@ Wait_List::Wait_List() {
 Wait_List::Wait_List(const Wait_List& wait_list) {
     // TODO
     // Copy contructor of waitlist, performs deep copy of the whole wait_list
-    
-    head = wait_list.head; // performing shallow copying
-    end = wait_list.end; // performing shallow copying
-    //first_players = new char* [match.num_first_players];
-    //for(int k=0;k<match.num_first_players;k++){
-    //    first_players[k] = new char [strlen(match.first_players[k])+1];
-    //    strcpy(first_players[k],match.first_players[k]);    
-    //}
+    // checks if the head is nullptr, if yes then no need to copy 
+    //cout<<"debugging"<<endl;
+    if (wait_list.get_head() == nullptr){
+        this->head = nullptr;
+        this->end = nullptr;
+        //cout<<"nothing in wait_list"<<endl;
+    }
+
+    else{
+        // We need to copy all student_listnodes
+        // func to get head of a wait list 
+        Student_ListNode* head = wait_list.get_head();
+        Student_ListNode* ptr = head;
+        Student_ListNode* tmp; 
+        //creating the first element in a list 
+        Student_ListNode* node_1 = new Student_ListNode(head->student_id,nullptr);
+        node_1->next = nullptr;
+
+        while (ptr->next != nullptr){
+            int index = 0;
+            Student_ListNode* node = new Student_ListNode(head->student_id,nullptr);
+            
+            if(index == 0){
+                node_1->next = node;
+                tmp = node_1->next;
+                //cout<<"first of waitlist"<<endl;
+            }
+            else{
+                tmp->next = node;
+                tmp = tmp->next;
+                index++;
+                //cout<<"subsequent of waitlist"<<endl;
+            }
+            ptr = ptr->next;
+        }
+    }
 
     // head is a Student_ListNode* (pointer)
 }

@@ -157,6 +157,7 @@ int main() {
             system->print_info();
             cout<<"System debug: Finish printing system one"<<endl;
             System* system2 = new System(*system);
+            cout<<"System Debug: Finish copying system 2"<<endl;
             system2->print_info();
             delete system2;
             delete system;
@@ -189,12 +190,23 @@ int main() {
             System* system = new System(20, 50);
 
             system->admit("Adam", 1000, 3.8);
+            //system->admit("Cindy", 1001, 3.8);///
             system->add_course("COMP2012", 4, 3);
+            //system->add_course("COMP2011", 2, 10);///
+            //system->add_course("COMP2211", 2, 10);///
+            //system->add_course("ELEC2350", 2, 10);///
+            //system->add_course("COMP3311", 2, 10);///
+
 
             system->add(1000, "COMP2012");
+            //system->add(1000, "COMP2011");///
+            //system->add(1000, "COMP2211");///
+            //system->add(1000, "ELEC2350");///
+            //system->add(1000, "COMP3311");///
             system->print_info();
-
+            cout<<"Now Dropping"<<endl;
             system->drop(1000, "COMP2012");
+            cout<<"Finished Dropping"<<endl;
             system->print_info();
             delete system;
         }

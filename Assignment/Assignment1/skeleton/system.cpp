@@ -38,9 +38,9 @@ System::System(const int max_num_course, const int max_num_student) {
 
 System::System(const System& system) {
     //cout<<"Copy Constructor of System is called"<<endl;
-    course_database = new Course_Database(*system.course_database);//cout<<"Course_Database ok"<<endl;
+    
     student_database = new Student_Database(*system.student_database);//cout<<"Student_Database ok"<<endl;
-   
+    course_database = new Course_Database(*system.course_database);//cout<<"Course_Database ok"<<endl;
 }
 
 System::~System() {
@@ -90,7 +90,7 @@ bool System::apply_overload(const int student_id, const int request_credit) {
     
 }
 
-bool System::add(const int student_id, const char* const course_name) {
+bool System::add(const int student_id, const char* const course_name){
     //TODO
     // Creates a tmp_course and tmp_student
     Course* tmp_course = this->course_database->get_course_by_name(course_name); // course object
@@ -214,50 +214,106 @@ bool System::swap(const int student_id, const char* const original_course_name, 
 
 void System::drop(const int student_id, const char* const course_name) {
     // TODO
-
     /*Drop the student from the course. Update the corresponding class data members of the student. 
     You should delete the dynamically allocated memory corresponding to the dropped course name 
     in enrolled_courses for the dropped student.*/
 
-    // 3 things: size of course -1 , num_of_course take by students - 1, delete char name 
     Course* tmp_course = this->course_database->get_course_by_name(course_name); // course
     Student* tmp_student = this->student_database->get_student_by_id(student_id); // student 
-    int course_credit = tmp_course->get_num_credit(); // course credit  
-    int num_course = tmp_course->get_size(); // course size (how many people currently enrolled)
-    int curr_credit = tmp_student->get_curr_credit(); // student 
-    int vacancy = tmp_course->get_capacity() - tmp_course->get_size(); // get the vacancy of a course 
+    Wait_List* waiting_list = tmp_course->get_wait_list();
+    Student_ListNode* next_on_the_list_id = waiting_list->get_head();
+    char** enrolled_courzez_delete = tmp_student->get_enrolled_courses();
+    int copy_next_on_the_list_id = 0;
 
     // for loop to find out the index of the student who drop the course 
     int* list_of_student_id_of_enrolled_students = tmp_course->get_students_enrolled();
-    int tmp_student_for_replace = list_of_student_id_of_enrolled_students[num_course-1]; // last entry put into vessel  
-    int index_for_the_empty_space_in_array = 0; // the index of the student_id to be deleted 
-    for (int k=0; k<num_course; k++){
-        if (list_of_student_id_of_enrolled_students[k] == student_id)
-        {
-            index_for_the_empty_space_in_array = k;
-            //list_of_student_id_of_enrolled_students[k] = 0;
-        }
+
+    for (int k=0; k<tmp_course->get_size(); k++){
+        if (list_of_student_id_of_enrolled_students[k] == student_id){
+            
+            // Which means got wait_list
+            if(next_on_the_list_id != nullptr){
+                
+                list_of_student_id_of_enrolled_students[k] = next_on_the_list_id->student_id;
+                //remove 
+                Student_ListNode* tmp = next_on_the_list_id; // temp = head
+                next_on_the_list_id = next_on_the_list_id->next;
+                //cout<<"next_on_the_list"<<copy_next_on_the_list_id<<endl;
+                delete tmp;
+                tmp = nullptr;
+
+                waiting_list->set_head(next_on_the_list_id);
+                tmp_course->set_wait_list(waiting_list);
+                //copy_next_on_the_list_id = next_on_the_list_id->student_id;
+            }
+
+            else{
+            list_of_student_id_of_enrolled_students[k] = list_of_student_id_of_enrolled_students[tmp_course->get_size()-1];
+            tmp_course->set_size(tmp_course->get_size()-1);
+            tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
+            //list_of_student_id_of_enrolled_students[num_course-1] = 0; if 4 = (5-1) -> 4 = 0 no good 
+            }
+        }        
     }
 
-    // dropping the student from course: delete him from course_database, 
-    char** enrolled_courzez_delete = tmp_student->get_enrolled_courses();
-    for (int k=0; k<tmp_student->get_num_enrolled_course(); k++){
-        if (strcmp(enrolled_courzez_delete[k],course_name)==1)
-        {
-            delete [] enrolled_courzez_delete[k];
-        }
-    }
-
-    //updating data members for the dropped student 
-    tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
-    tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
-    tmp_student->set_enrolled_courses(enrolled_courzez_delete);
-    //tmp_student->set_pending_credit(tmp_student);
-    tmp_course->set_size(tmp_course->get_size()-1);
-
+    // Save changes 
+    tmp_course->set_students_enrolled(list_of_student_id_of_enrolled_students);
+    //cout<<list_of_student_id_of_enrolled_students[9];
+    //cout<<"Printing info"<<endl;
+    //tmp_course->print_info();
+    //int indexes = 0;
     
+    for (int k=0; k<tmp_student->get_num_enrolled_course(); k++){
+        if (strcmp(enrolled_courzez_delete[k],course_name)==0){
+            //if (copy_next_on_the_list_id){
+                //indexes = k;
+                //cout<<"I want to drop "<<course_name<<endl;
+                //cout<<"Index is "<<indexes<<endl;
+                char* tmp_name = new char [strlen(enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1])+1];
+                strcpy(tmp_name,enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1]);
+                //cout<<tmp_name<<endl;
+
+                // cannot delete pointer from here so we will strcpy nothing to it-> memory leak  
+
+                strcpy(enrolled_courzez_delete[k],tmp_name);
+                tmp_student->set_enrolled_courses(enrolled_courzez_delete);
+                tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
+        } 
+    }
+   
+    //tmp_student->set_pending_credit(tmp_student);
+    //tmp_course->set_size(tmp_course->get_size()-1);
+
+    /*
+    2. Check if anyone is waiting on the course waitlist.
+    If yes, the student in the first place on the waitlist can get into the course.
+    The student must be able to get into the course (guaranteed by Worst Case Credit Control Policy). 
+    Enroll the student in the class and update the class data members of the course and the student. 
+    Do remember to delete the Student_ListNode.
+    */
+    
+
+    // If true, meaning there is someone on the waiting list
+    /*
+    if(next_on_the_list_id->student_id){
+        //append to the immediate available space
+        int* list_of_student_id_of_enrolled_students = tmp_course->get_students_enrolled();
+        list_of_student_id_of_enrolled_students[tmp_course->get_size()] = next_on_the_list_id->student_id; 
+        tmp_course->set_size(tmp_course->get_size()+1);
+        tmp_course->set_students_enrolled(list_of_student_id_of_enrolled_students);
+
+        Student_ListNode* tmp = next_on_the_list_id; // temp = head
+        next_on_the_list_id = next_on_the_list_id->next;
+        delete tmp;
+        tmp = nullptr;
+
+        waiting_list->set_head(next_on_the_list_id);
+        tmp_course->set_wait_list(waiting_list);
+    }
+    */
     
 }
+    
 
 void System::add_course(const char* const name, const int num_credit, const int course_capacity) {
     this->course_database->create_entry(name, num_credit, course_capacity);

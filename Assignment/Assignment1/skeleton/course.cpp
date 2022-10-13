@@ -5,8 +5,8 @@
 
 using namespace std;
 
-Course::Course(const char* const name, const int num_credit, const int course_capacity) :students_enrolled(new int [course_capacity]){
-    // 
+Course::Course(const char* const name, const int num_credit, const int course_capacity) {
+    // :students_enrolled(new int [course_capacity]) MIL 
     this->name = new char [strlen(name)+1];
     strcpy(this->name,name);
     this->num_credit = num_credit;
@@ -15,8 +15,8 @@ Course::Course(const char* const name, const int num_credit, const int course_ca
     this->wait_list = new Wait_List;
     
     // Init the values inside the dynamic array to be 0.
-    //this->students_enrolled = new int [course_capacity];
-    //for (int k = 0;k<course_capacity;k++){this->students_enrolled[k]=0;}
+    this->students_enrolled = new int [course_capacity];
+    for (int k = 0;k<course_capacity;k++){this->students_enrolled[k]=0;}
 }
 
 Course::Course(const Course& course) {
@@ -30,25 +30,19 @@ Course::Course(const Course& course) {
     Wait_List* wait_list;
     int* students_enrolled;
     */
+    //cout<<"Course class entry"<<endl;
     name = new char [strlen(course.name)+1]; // char data member 
     strcpy(name,course.name);
-    //
     num_credit = course.num_credit;
     capacity = course.capacity;
     size = course.size;
     Wait_List* waiting_list = course.get_wait_list();
-    Student_ListNode* ptr = waiting_list->get_head();
-    while(ptr->next!=NULL){
-        Student_ListNode* new_student = new Student_ListNode(ptr->student_id,nullptr);
-        ptr = ptr->next;
-    }
-    wait_list = new Wait_List;
-    // This is shallow copy, will lead to undefined behaviour
-    wait_list = course.wait_list; 
-    int get_size = course.get_size();
-    students_enrolled = new int [get_size];
+    
+    // Use a for loop copy everything inside the waitlist and student_id
+    wait_list = new Wait_List(*waiting_list);
+    students_enrolled = new int [course.get_size()];
 
-    for(int k=0;k<get_size;k++){
+    for(int k=0;k<course.get_size();k++){
         students_enrolled[k] = course.students_enrolled[k];
     }
 }

@@ -69,7 +69,7 @@ void Student::print_info() const {
     cout << "Num Courses Enrolled: " <<  this->num_enrolled_course << endl;
     cout << "Course Enrolled: " << endl;
     for(int i = 0; i < this->num_enrolled_course; ++i){
-        cout << "class" <<endl;
+        //cout << "class" <<endl;
         cout << this->enrolled_courses[i] << endl;
     }
     cout << endl;

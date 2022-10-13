@@ -12,10 +12,13 @@ Course_Database::Course_Database(const int capacity) {
 }
 
 Course_Database::Course_Database(const Course_Database& database) {
+    cout<<"Copy Contructor for course database called"<<endl;
+    //database.print_all_course();
     this->capacity = database.capacity;
     this->size = database.size;
     this->courses = new Course*[this->capacity];
     for(int i = 0; i < database.size; ++i) {
+        cout<<"Copy Contructor for course database called 1"<<endl;
         this->courses[i] = new Course(*database.courses[i]);
     }
 }
@@ -51,6 +54,7 @@ Course* Course_Database::get_course_by_name(const char* const course_name) const
 void Course_Database::print_all_course() const {
     cout << "PRINTING ALL COURSE INFORMATION: " << endl;
     for(int i = 0; i < this->size; ++i) {
+        cout<<"Course info"<<endl;
         this->courses[i]->print_info();
         cout << endl;
     }
