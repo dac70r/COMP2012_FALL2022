@@ -24,12 +24,16 @@ Course_Database::Course_Database(const Course_Database& database) {
 }
 
 Course_Database::~Course_Database() {
+    cout<<"Course Database deleted called"<<endl;
+    cout<<"Printing all to be deleted courses: ----------------------"<<endl;
+    this->print_all_course();
     for(int i = 0; i < this->size; ++i) {
         if(this->courses[i]) {
             delete this->courses[i];
         }
     }
     delete [] courses;
+    cout<<"Course Database deletion finished"<<endl;
 }
 
 bool Course_Database::create_entry(const char* const name, const int num_credit, const int course_capacity) {

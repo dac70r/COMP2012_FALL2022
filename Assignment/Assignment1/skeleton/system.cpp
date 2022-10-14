@@ -37,15 +37,15 @@ System::System(const int max_num_course, const int max_num_student) {
 }
 
 System::System(const System& system) {
-    //cout<<"Copy Constructor of System is called"<<endl;
+    cout<<"Copy Constructor of System is called"<<endl;
     
-    student_database = new Student_Database(*system.student_database);//cout<<"Student_Database ok"<<endl;
-    course_database = new Course_Database(*system.course_database);//cout<<"Course_Database ok"<<endl;
+    student_database = new Student_Database(*system.student_database);cout<<"Student_Database ok"<<endl;
+    course_database = new Course_Database(*system.course_database);cout<<"Course_Database ok"<<endl;
 }
 
 System::~System() {
-    delete course_database;
-    delete student_database;
+    delete course_database; cout<<"System: Course database delete ok"<<endl;
+    delete student_database; cout<<"System: Student database delete ok"<<endl;
 }
 
 void System::admit(const char* const name, const int student_id, const double gpa) {
@@ -120,7 +120,32 @@ bool System::add(const int student_id, const char* const course_name){
             //cout<<"adding first to wait_list"<<endl;
         }
 
+        /*
+        else if (head != nullptr){
+            int* enrolled_student_id_for_compare = tmp_course->get_students_enrolled();
+            for (int k =0; k<tmp_course->get_size();k++){  
+                if(strcmp(enrolled_student_id_for_compare[k],student_id)==0){
+                    // updating the pending credit, curr credit, no of courses, strcpy 
+                    tmp_student->set_pending_credit(tmp_student->get_pending_credit() - tmp_course->get_num_credit());
+                }
+            }
+        }
+        */
+    
         else{
+            int* enrolled_student_id_for_compare = tmp_course->get_students_enrolled();
+            for (int k =0; k<tmp_course->get_size();k++){  
+                if(enrolled_student_id_for_compare[k]==student_id){
+                    // updating the pending credit, curr credit, no of courses, strcpy 
+                    char** enrolled_courzez = tmp_student->get_enrolled_courses(); 
+                    enrolled_courzez[tmp_student->get_num_enrolled_course()] = new char [strlen(course_name)+1];//student
+                    strcpy(enrolled_courzez[tmp_student->get_num_enrolled_course()],course_name);
+                    tmp_student->set_curr_credit(tmp_student->get_curr_credit()+tmp_course->get_num_credit());
+                    tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()+1);
+                    tmp_student->set_pending_credit(tmp_student->get_pending_credit() - tmp_course->get_num_credit());
+                    return true;
+                }
+            }
             // Rules to adding items to wait_list: head link up with second // end point to second
             // creating a new node to store any waitlist information
             Student_ListNode* another_node = new Student_ListNode(student_id, nullptr); 
@@ -138,7 +163,7 @@ bool System::add(const int student_id, const char* const course_name){
             tmp_course->set_wait_list(waiting_list);
             tmp_student->set_pending_credit(tmp_student->get_pending_credit() + tmp_course->get_num_credit());
             //cout<<"Student added to waitlist"<<endl;
-        }
+            }   
         return true;
     }
 
@@ -222,7 +247,6 @@ void System::drop(const int student_id, const char* const course_name) {
     Student_ListNode* next_on_the_list_id = waiting_list->get_head();
     char** enrolled_courzez_delete = tmp_student->get_enrolled_courses();
     int copy_next_on_the_list_id = 0;
-    int big_big_senior = 0;
 
     // for loop to find out the index of the student who drop the course 
     int* list_of_student_id_of_enrolled_students = tmp_course->get_students_enrolled();
@@ -232,10 +256,10 @@ void System::drop(const int student_id, const char* const course_name) {
             
             // Which means got wait_list
             if(next_on_the_list_id != nullptr){
-                copy_next_on_the_list_id = next_on_the_list_id->student_id; // store in student id 
+                copy_next_on_the_list_id = next_on_the_list_id->student_id; // store in student id 1003 
                 //cout<<copy_next_on_the_list_id<<endl;
                 list_of_student_id_of_enrolled_students[k] = next_on_the_list_id->student_id; // Replace
-                //int last_student_id = list_of_student_id_of_enrolled_students[tmp_course->get_size()-1]; // last 
+                
                 Student_ListNode* tmp = next_on_the_list_id; // temp = head
                 next_on_the_list_id = next_on_the_list_id->next;
                 //cout<<"next_on_the_list"<<copy_next_on_the_list_id<<endl;
@@ -246,13 +270,12 @@ void System::drop(const int student_id, const char* const course_name) {
                 tmp_course->set_wait_list(waiting_list);
                 tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
                 tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
-                //copy_next_on_the_list_id = next_on_the_list_id->student_id;
 
-                //Updating the student that was waitlisted
-                tmp_course->set_size(tmp_course->get_size()-1);
-                
-                //cout<<tmp_course->get_size()<<endl;
-                cout<<next_on_the_list_id->student_id<<endl;
+                //Updating the student who was waitlisted and got added into the stuff
+                //Student* tmp_student_replaced = this->student_database->get_student_by_id(copy_next_on_the_list_id);
+                //tmp_student_replaced->set_curr_credit(tmp_student_replaced->get_curr_credit()+tmp_course->get_num_credit());
+                //tmp_student_replaced->set_num_enrolled_course(tmp_student_replaced->get_num_enrolled_course()+1); 
+                //cout<<copy_next_on_the_list_id<<endl;
                 add(copy_next_on_the_list_id,course_name);
             }
 
@@ -260,7 +283,7 @@ void System::drop(const int student_id, const char* const course_name) {
             list_of_student_id_of_enrolled_students[k] = list_of_student_id_of_enrolled_students[tmp_course->get_size()-1];
             tmp_course->set_size(tmp_course->get_size()-1);
             tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
-            //tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
+            tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
             //list_of_student_id_of_enrolled_students[num_course-1] = 0; if 4 = (5-1) -> 4 = 0 no good 
             }
         }        
