@@ -48,7 +48,6 @@ Student::~Student() {
     //cout<<"Student: Destructor of Student called: "<<endl;
     delete [] name;
     //cout<<"deleted name"<<endl;
-    int k1=0;
     //for(int k=0;k<this->get_num_enrolled_course();k++)
     //{
        
@@ -56,7 +55,6 @@ Student::~Student() {
         //    delete [] enrolled_courses [k];
             //cout<<"Deleting: a "<< enrolled_courses[k]<<endl;
         //}
-
         //cout<<"Deleting: "<< k <<" "<<endl;
     //}
 

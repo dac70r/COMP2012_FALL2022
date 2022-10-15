@@ -15,6 +15,7 @@ Swap::Swap(const char* const original_course_name, const char* const target_cour
 Swap::~Swap() {
     delete [] original_course_name;
     delete [] target_course_name;
+    //next = nullptr;
 }
 
 Swap_List::Swap_List() {
@@ -26,15 +27,17 @@ Swap_List::Swap_List() {
 
 Swap_List::Swap_List(const Swap_List& swap_list) {
     // TODO
+    /*
     Swap* headnode = swap_list.get_head();
     Swap* ptr = headnode;
     Swap* tmp = nullptr;
-    Swap* node_1 = new Swap(headnode->original_course_name,headnode->target_course_name,nullptr);
-
+    
     if (headnode == nullptr){
         head = nullptr;
     }
+
     else{
+        Swap* node_1 = new Swap(headnode->original_course_name,headnode->target_course_name,nullptr);
         if(ptr->next == nullptr){
             this->set_head(node_1);
         }
@@ -58,10 +61,32 @@ Swap_List::Swap_List(const Swap_List& swap_list) {
         }
 
     }
+    */
 }
+    
+    
 
 Swap_List::~Swap_List() {
     // TODO
+    //Swap* headder = this->get_head();
+    //Swap* nice = nullptr;
+
+
+    /*
+    if (headder != nullptr){
+        while (headder->next != nullptr)
+        {
+            Swap* nice_guy = headder;  
+            headder = headder->next;
+            this->set_head(headder);
+            delete nice_guy; 
+        }
+
+        delete headder; 
+    }
+    */
+   //delete headder;
+    
 }
 
 void Swap_List::print_list() const {
