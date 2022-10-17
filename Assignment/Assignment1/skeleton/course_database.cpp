@@ -4,6 +4,11 @@
 #include "course.h"
 
 using namespace std;
+/*
+Course** courses;
+    int capacity;
+    int size;
+*/
 
 Course_Database::Course_Database(const int capacity) {
     this->courses = new Course*[capacity];
@@ -12,20 +17,20 @@ Course_Database::Course_Database(const int capacity) {
 }
 
 Course_Database::Course_Database(const Course_Database& database) {
-    cout<<"Copy Contructor for course database called"<<endl;
-    //database.print_all_course();
+    cout<<"Course_Database: Copy Contructor for course database is called"<<endl;
+    cout<<"Course_Database: Printing all courses in database -----------"<<endl;
+    database.print_all_course();
     this->capacity = database.capacity;
     this->size = database.size;
-    this->courses = new Course*[this->capacity];
+    this->courses = new Course*[this->capacity]; // creates pointers for the number of courses in the database
     for(int i = 0; i < database.size; ++i) {
-        cout<<"Copy Contructor for course database called 1"<<endl;
-        this->courses[i] = new Course(*database.courses[i]);
+        this->courses[i] = new Course(*database.courses[i]); // <-- this calls the Course(const Course& course)
     }
 }
 
 Course_Database::~Course_Database() {
-    cout<<"Course Database deleted called"<<endl;
-    cout<<"Printing all to be deleted courses: ----------------------"<<endl;
+    cout<<"Course_Database: Course Database deleted called"<<endl;
+    cout<<"Course_Database: Printing all to be deleted courses: ----------------------"<<endl;
     this->print_all_course();
     for(int i = 0; i < this->size; ++i) {
         if(this->courses[i]) {
@@ -33,7 +38,7 @@ Course_Database::~Course_Database() {
         }
     }
     delete [] courses;
-    cout<<"Course Database deletion finished"<<endl;
+    cout<<"Course_Database: Course Database deletion finished"<<endl;
 }
 
 bool Course_Database::create_entry(const char* const name, const int num_credit, const int course_capacity) {

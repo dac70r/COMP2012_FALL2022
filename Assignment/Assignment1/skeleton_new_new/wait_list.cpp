@@ -78,6 +78,8 @@ Wait_List::Wait_List(const Wait_List& wait_list) {
 
 Wait_List::~Wait_List() {
     // TODO
+    //this->head
+    /*
     if (this->get_head() == nullptr){
         head = nullptr;
         end = nullptr;
@@ -100,7 +102,7 @@ Wait_List::~Wait_List() {
         }
         // last step should have leak if  
     }
-    
+    */
 }
 
 void Wait_List::print_list() const {

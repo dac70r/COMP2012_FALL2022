@@ -15,7 +15,6 @@ Swap::Swap(const char* const original_course_name, const char* const target_cour
 Swap::~Swap() {
     delete [] original_course_name;
     delete [] target_course_name;
-    //next = nullptr;
 }
 
 Swap_List::Swap_List() {
@@ -27,22 +26,30 @@ Swap_List::Swap_List() {
 
 Swap_List::Swap_List(const Swap_List& swap_list) {
     // TODO
-    /*
-    Swap* headnode = swap_list.get_head();
+    cout<<"Calls the copy constructor of swap_list "<<endl;
+    Swap* headnode = swap_list.get_head(); //swap head of copied class
     Swap* ptr = headnode;
     Swap* tmp = nullptr;
     
     if (headnode == nullptr){
         head = nullptr;
+        this->set_head(head);
     }
-
     else{
-        Swap* node_1 = new Swap(headnode->original_course_name,headnode->target_course_name,nullptr);
         if(ptr->next == nullptr){
+            Swap* node_1 = new Swap(headnode->original_course_name,headnode->target_course_name,nullptr);
             this->set_head(node_1);
         }
 
         else{
+            while (ptr->next != nullptr)
+            {
+                Swap* local_head = this->get_head();
+                Swap* node = new Swap(ptr->next->original_course_name,ptr->next->target_course_name,nullptr);
+                local_head->next = node;
+                ptr  = ptr->next;
+        }
+            /*
             int index = 0;
             while (ptr->next != nullptr){        
                 Swap* node = new Swap(ptr->next->original_course_name,ptr->next->target_course_name,nullptr);
@@ -56,37 +63,14 @@ Swap_List::Swap_List(const Swap_List& swap_list) {
 
                 }
                 ptr = ptr->next;
-                
             }   
+            */
         }
-
     }
-    */
 }
-    
-    
 
 Swap_List::~Swap_List() {
     // TODO
-    //Swap* headder = this->get_head();
-    //Swap* nice = nullptr;
-
-
-    /*
-    if (headder != nullptr){
-        while (headder->next != nullptr)
-        {
-            Swap* nice_guy = headder;  
-            headder = headder->next;
-            this->set_head(headder);
-            delete nice_guy; 
-        }
-
-        delete headder; 
-    }
-    */
-   //delete headder;
-    
 }
 
 void Swap_List::print_list() const {

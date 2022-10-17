@@ -40,26 +40,26 @@ Student::Student(const Student& student) {
         strcpy(enrolled_courses[k],student.enrolled_courses[k]);
     }
     pending_credit = student.pending_credit;
-    swap_list = student.swap_list;
+    swap_list = student.swap_list; 
+    /*
+    Swap* headnode = student.swap_list->get_head();
+    while (headnode->next!= nullptr){
+        Swap* swap_list_head = swap_list->get_head();
+        swap_list_head->original_course_name = new char [strlen(headnode->original_course_name)+1];
+        strcpy(swap_list_head->original_course_name, headnode->original_course_name);
+        swap_list_head->target_course_name = new char [strlen(headnode->target_course_name)+1];
+        strcpy(swap_list_head->target_course_name, headnode->target_course_name);
+        swap_list_head->next = headnode->next;
+    }
+    */
+   
 }
 
 Student::~Student() {
     // TODO
     //cout<<"Student: Destructor of Student called: "<<endl;
     delete [] name;
-    //cout<<"deleted name"<<endl;
-    //for(int k=0;k<this->get_num_enrolled_course();k++)
-    //{
-       
-       //if(enrolled_courses[k] != nullptr){
-        //    delete [] enrolled_courses [k];
-            //cout<<"Deleting: a "<< enrolled_courses[k]<<endl;
-        //}
-        //cout<<"Deleting: "<< k <<" "<<endl;
-    //}
-
     delete [] enrolled_courses;
-    
     delete swap_list;
     //cout<<"End of Student Delete"<<endl;
 }

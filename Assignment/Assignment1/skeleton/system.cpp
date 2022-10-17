@@ -23,11 +23,13 @@ void join_waitlist(const int student_id, Course* course) {
 // Helper function: find the index of a course within the enrolled course list of a student.
 int search_course_index(const Student* const student, const char* const course_name) {
     // TODO
+    return 0;
 }
 
 // Helper function: find the index of the student_id in the enrolled student list
 int search_student_id(const int student_id, const Course* const course) {
     // TODO
+    return 0;
 }
 
 
@@ -37,15 +39,15 @@ System::System(const int max_num_course, const int max_num_student) {
 }
 
 System::System(const System& system) {
-    cout<<"Copy Constructor of System is called"<<endl;
+    //cout<<"System: Copy Constructor of System is called"<<endl;
     
-    student_database = new Student_Database(*system.student_database);cout<<"Student_Database ok"<<endl;
-    course_database = new Course_Database(*system.course_database);cout<<"Course_Database ok"<<endl;
+    student_database = new Student_Database(*system.student_database);//cout<<"System: Student_Database ok"<<endl;
+    course_database = new Course_Database(*system.course_database);//cout<<"System: Course_Database ok"<<endl;
 }
 
 System::~System() {
-    delete course_database; cout<<"System: Course database delete ok"<<endl;
-    delete student_database; cout<<"System: Student database delete ok"<<endl;
+    delete course_database; //cout<<"System: Course database delete ok"<<endl;
+    delete student_database; //cout<<"System: Student database delete ok"<<endl;
 }
 
 void System::admit(const char* const name, const int student_id, const double gpa) {
@@ -111,7 +113,7 @@ bool System::add(const int student_id, const char* const course_name){
         Student_ListNode* head = waiting_list->get_head();
 
         if(head == nullptr){
-            
+            // Nothing in the waitlist will add new entry to the first point in the waitlist
             Student_ListNode* node_student = new Student_ListNode(student_id, nullptr);
             waiting_list->set_head(node_student);
             waiting_list->set_end(node_student);
@@ -120,18 +122,7 @@ bool System::add(const int student_id, const char* const course_name){
             //cout<<"adding first to wait_list"<<endl;
         }
 
-        /*
-        else if (head != nullptr){
-            int* enrolled_student_id_for_compare = tmp_course->get_students_enrolled();
-            for (int k =0; k<tmp_course->get_size();k++){  
-                if(strcmp(enrolled_student_id_for_compare[k],student_id)==0){
-                    // updating the pending credit, curr credit, no of courses, strcpy 
-                    tmp_student->set_pending_credit(tmp_student->get_pending_credit() - tmp_course->get_num_credit());
-                }
-            }
-        }
-        */
-    
+        // There is already entries in the waitlist
         else{
             int* enrolled_student_id_for_compare = tmp_course->get_students_enrolled();
             for (int k =0; k<tmp_course->get_size();k++){  
@@ -186,6 +177,8 @@ bool System::add(const int student_id, const char* const course_name){
             tmp_student->set_curr_credit(tmp_student->get_curr_credit()+tmp_course->get_num_credit()); //student
             int num_of_enrolled_courses = tmp_student->get_num_enrolled_course();
             tmp_student->set_num_enrolled_course(num_of_enrolled_courses+1);
+            //cout<<"gg"<<endl;
+            //tmp_student->print_info();
             //cout<<"No of enrolled courses by this student is "<<tmp_student->get_num_enrolled_course()<<endl;
             return true;
         }
@@ -223,16 +216,31 @@ bool System::swap(const int student_id, const char* const original_course_name, 
         return false; 
     }
 
-    // 2. Check if target course has any vacancies, update Course and Student class data members 
-    if(tmp_target_course->get_capacity()-tmp_target_course->get_size() >0){
+    // 2. Check if target course has any vacancies, update Course and Student class data members
+    /*
+    Enroll the student into the target_course and 
+    update the corresponding Course and Student class data members.
+    */ 
+    if(tmp_target_course->get_capacity()-tmp_target_course->get_size() > 0){
         //bigger than 0 means got vacancy
+        //char** enrolled_course = tmp_student->get_enrolled_courses();
+        //for(int k=0;k<tmp_student->get_num_enrolled_course();k++){
+            //if(strcmp(enrolled_course[k],original_course_name)==0){
+            //    strcpy(enrolled_course[k],target_course_name);
+            //   tmp_student->set_curr_credit(tmp_target_course->get_num_credit());
+            //   tmp_original_course->set_size(tmp_original_course->get_size()-1);
+            //int* students = tmp_target_course->get_students_enrolled();
+            //students[tmp_target_course->get_size()] = student_id;
+            //tmp_target_course->set_students_enrolled(students);
+            //tmp_target_course->set_size(tmp_target_course->get_size()+1);
+            //drop()
+        //}
+        //}
         add(student_id,target_course_name); // call the add function
-        
-
+        drop(student_id,original_course_name);
+        return true;
     }
-
-
-
+    return false;
 }
 
 void System::drop(const int student_id, const char* const course_name) {
@@ -258,7 +266,7 @@ void System::drop(const int student_id, const char* const course_name) {
             if(next_on_the_list_id != nullptr){
                 copy_next_on_the_list_id = next_on_the_list_id->student_id; // store in student id 1003 
                 //cout<<copy_next_on_the_list_id<<endl;
-                list_of_student_id_of_enrolled_students[k] = next_on_the_list_id->student_id; // Replace
+                list_of_student_id_of_enrolled_students[k] = next_on_the_list_id->student_id; // Replace student id 
                 
                 Student_ListNode* tmp = next_on_the_list_id; // temp = head
                 next_on_the_list_id = next_on_the_list_id->next;
@@ -271,7 +279,7 @@ void System::drop(const int student_id, const char* const course_name) {
                 tmp_student->set_curr_credit(tmp_student->get_curr_credit()-tmp_course->get_num_credit());
                 tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
 
-                //Updating the student who was waitlisted and got added into the stuff
+                //Updating the student who was waitlisted and got added into the course database
                 //Student* tmp_student_replaced = this->student_database->get_student_by_id(copy_next_on_the_list_id);
                 //tmp_student_replaced->set_curr_credit(tmp_student_replaced->get_curr_credit()+tmp_course->get_num_credit());
                 //tmp_student_replaced->set_num_enrolled_course(tmp_student_replaced->get_num_enrolled_course()+1); 
@@ -298,51 +306,16 @@ void System::drop(const int student_id, const char* const course_name) {
     
     for (int k=0; k<tmp_student->get_num_enrolled_course(); k++){
         if (strcmp(enrolled_courzez_delete[k],course_name)==0){
-            //if(copy_next_on_the_list_id){
-            //}
-            //else{
-                char* head = enrolled_courzez_delete[k];
-                char* chad_name = new char [strlen(enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1])+1];
-                strcpy(chad_name, enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1]);
-                //cout<<chad_name<<endl;
-                // cannot delete pointer from here so we will strcpy nothing to it-> memory leak               
-                strcpy(enrolled_courzez_delete[k],chad_name);
-                tmp_student->set_enrolled_courses(enrolled_courzez_delete);
-                //tmp_student->set_num_enrolled_course(tmp_student->get_num_enrolled_course()-1);
-            //}
+
+            char* head = enrolled_courzez_delete[k];
+            char* chad_name = new char [strlen(enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1])+1];
+            strcpy(chad_name, enrolled_courzez_delete[tmp_student->get_num_enrolled_course()-1]);
+            //cout<<chad_name<<endl;
+            // cannot delete pointer from here so we will strcpy nothing to it-> memory leak               
+            strcpy(enrolled_courzez_delete[k],chad_name);
+            tmp_student->set_enrolled_courses(enrolled_courzez_delete);
         } 
     }
-   
-    //tmp_student->set_pending_credit(tmp_student);
-    //tmp_course->set_size(tmp_course->get_size()-1);
-
-    /*
-    2. Check if anyone is waiting on the course waitlist.
-    If yes, the student in the first place on the waitlist can get into the course.
-    The student must be able to get into the course (guaranteed by Worst Case Credit Control Policy). 
-    Enroll the student in the class and update the class data members of the course and the student. 
-    Do remember to delete the Student_ListNode.
-    */
-    
-
-    // If true, meaning there is someone on the waiting list
-    /*
-    if(next_on_the_list_id->student_id){
-        //append to the immediate available space
-        int* list_of_student_id_of_enrolled_students = tmp_course->get_students_enrolled();
-        list_of_student_id_of_enrolled_students[tmp_course->get_size()] = next_on_the_list_id->student_id; 
-        tmp_course->set_size(tmp_course->get_size()+1);
-        tmp_course->set_students_enrolled(list_of_student_id_of_enrolled_students);
-
-        Student_ListNode* tmp = next_on_the_list_id; // temp = head
-        next_on_the_list_id = next_on_the_list_id->next;
-        delete tmp;
-        tmp = nullptr;
-
-        waiting_list->set_head(next_on_the_list_id);
-        tmp_course->set_wait_list(waiting_list);
-    }
-    */
     
 }
     

@@ -19,39 +19,57 @@ Wait_List::Wait_List(const Wait_List& wait_list) {
     // TODO
     // Copy contructor of waitlist, performs deep copy of the whole wait_list
     // checks if the head is nullptr, if yes then no need to copy 
-    //cout<<"debugging"<<endl;
+    //cout<<"Wait_List: Copy Constructor of Wait_List is called"<<endl;
     if (wait_list.get_head() == nullptr){
         this->head = nullptr;
         this->end = nullptr;
-        //cout<<"nothing in wait_list"<<endl;
+        //cout<<"Wait_List: Nothing in wait_list!"<<endl;
     }
 
     else{
         // We need to copy all student_listnodes
         // func to get head of a wait list 
-        Student_ListNode* head = wait_list.get_head();
-        Student_ListNode* ptr = head;
-        Student_ListNode* tmp; 
+        Student_ListNode* head = wait_list.get_head(); // 1004
+        //cout<<"Wait_List: "<<head->student_id<<endl;
+        Student_ListNode* ptr = head; // 1004 
+        Student_ListNode* tmp = nullptr; 
+        Student_ListNode* ptz = nullptr;
         //creating the first element in a list 
         Student_ListNode* node_1 = new Student_ListNode(head->student_id,nullptr);
         node_1->next = nullptr;
 
-        while (ptr->next != nullptr){
+        if(head->next == nullptr){
+            // meaning only 1 in the waitlist
+            this->set_head(node_1);
+            this->set_end(node_1);
+        }
+
+        else{
             int index = 0;
-            Student_ListNode* node = new Student_ListNode(head->student_id,nullptr);
-            
-            if(index == 0){
-                node_1->next = node;
-                tmp = node_1->next;
-                //cout<<"first of waitlist"<<endl;
-            }
-            else{
-                tmp->next = node;
-                tmp = tmp->next;
+            while (ptr->next != nullptr){
+                head = head->next;
+                Student_ListNode* node = new Student_ListNode(head->student_id,nullptr);
+                
+                if(index == 0){
+                    node_1->next = node;
+                    tmp = node_1->next;
+                    //cout<<"Wait_List: First of Waitlist added"<<endl;
+                    //this->set_head()
+                    //this->set_end(node_1);
+                    //this->print_list();
+                    }
+
+                else{
+                    tmp->next = node;
+                    tmp = tmp->next;
+                    //cout<<"Wait_List: Subsequent of Waitlist added"<<endl;
+                }
                 index++;
-                //cout<<"subsequent of waitlist"<<endl;
+                ptr = ptr->next;
+                if(ptr->next == nullptr){ptz = ptr;}
             }
-            ptr = ptr->next;
+            this->set_head(node_1);
+            this->set_end(ptz);
         }
     }
 

@@ -6,55 +6,15 @@
 using namespace std;
 
 Course::Course(const char* const name, const int num_credit, const int course_capacity) {
-    // :students_enrolled(new int [course_capacity]) MIL 
-    this->name = new char [strlen(name)+1];
-    strcpy(this->name,name);
-    this->num_credit = num_credit;
-    this->capacity = course_capacity;
-    this->size = 0;
-    this->wait_list = new Wait_List;
-    
-    // Init the values inside the dynamic array to be 0.
-    this->students_enrolled = new int [course_capacity];
-    for (int k = 0;k<course_capacity;k++){this->students_enrolled[k]=0;}
+    // TODO
 }
 
 Course::Course(const Course& course) {
     // TODO
-    // Perform deep copy of all data members 
-    /*
-    char* name;
-    int num_credit;
-    int capacity;
-    int size;
-    Wait_List* wait_list;
-    int* students_enrolled;
-    */
-    //cout<<"Course: Copy Contructor for Course is called once"<<endl;
-    name = new char [strlen(course.name)+1]; // char data member 
-    strcpy(name,course.name);
-    num_credit = course.num_credit;
-    capacity = course.capacity;
-    size = course.size;
-    Wait_List* waiting_list = course.get_wait_list();
-    //cout<<"Course: Printing the waitlist to be copied_____"<<endl;
-    //waiting_list->print_list();
-
-    // Use a for loop copy everything inside the waitlist and student_id
-    wait_list = new Wait_List(*waiting_list);
-    students_enrolled = new int [course.get_size()];
-
-    // Copy all the student ids 
-    for(int k=0;k<course.get_size();k++){
-        students_enrolled[k] = course.students_enrolled[k];
-    }
 }
 
 Course::~Course() {
     // TODO
-    delete [] name;
-    delete wait_list; // will call destructor of wait_list
-    delete [] students_enrolled; 
 }
 
 void Course::print_info() const {

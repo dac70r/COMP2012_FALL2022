@@ -285,6 +285,7 @@ system->print_info();
             system->admit("Hermione", 1006, 4.3);
 
             system->add_course("COMP2012", 4, 3); // Quota: 3
+            system->add_course("PHYS1112", 3, 3); // Quota: 100
 
             system->add(1000, "COMP2012");
             system->add(1001, "COMP2012");

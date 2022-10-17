@@ -258,14 +258,15 @@ int main() {
             system->admit("Hermione", 1006, 4.3);
 
             system->add_course("COMP2012", 4, 3); // Quota: 3
-
+            
             system->add(1000, "COMP2012");
             system->add(1001, "COMP2012");
             system->add(1002, "COMP2012");
             system->add(1003, "COMP2012");  // Student 1003 gets into the wait list of COMP2012
             system->add(1004, "COMP2012");  // Student 1004 gets into the wait list of COMP2012
             system->add(1005, "COMP2012");  // Student 1005 gets into the wait list of COMP2012
-            system->add(1006, "COMP2012");  // Student 1006 gets into the wait list of COMP2012
+            
+            cout<<"ok"<<endl;system->add(1006, "COMP2012");  // Student 1006 gets into the wait list of COMP2012
             system->print_info();
             system->drop(1001, "COMP2012"); // Student 1001 drops, student 1003 should get into COMP2012
            // system->drop(1001, "COMP2012");

@@ -158,6 +158,7 @@ bool System::add(const int student_id, const char* const course_name){
             tmp_course->set_wait_list(waiting_list);
             tmp_student->set_pending_credit(tmp_student->get_pending_credit() + tmp_course->get_num_credit());
             //cout<<"adding first to wait_list"<<endl;
+            delete node_student;
 
         }
 
@@ -294,7 +295,7 @@ bool System::swap(const int student_id, const char* const original_course_name, 
     Swap* swap_head = swapping_list->get_head();
     int worst_case_credit = 0;
     while (head -> next != nullptr){
-    
+        
     }
 
     return true; 
@@ -370,31 +371,6 @@ void System::drop(const int student_id, const char* const course_name) {
         Added_student->set_pending_credit(Added_student->get_pending_credit()-tmp_course->get_num_credit());
         //cout<<"Checking waiting list"<<endl;
         //waiting_list->print_list();
-        //int* students_enrolled_added_student = tmp
-        // drop trigger a swap 
-        Swap_List* swapping_list_added_student = Added_student->get_swap_list();
-        Swap* swap_added_student = swapping_list_added_student->get_head();
-        int* students_enrolleded = tmp_course->get_students_enrolled();
-        swapping_list_added_student->print_list();
-        cout<<"ok"<<endl;
-        if(swap_added_student->next==nullptr){
-            if(strcmp(swap_added_student->target_course_name,course_name) == 0 ){
-                cout<< "Found a swap target1 "<< swap_added_student->target_course_name<<endl;
-                //drop(Added_student->get_student_id(),swap_added_student->target_course_name);
-                
-            }
-        }
-        else{
-            while (swap_added_student->next != nullptr){
-            if(strcmp(swap_added_student->target_course_name,course_name) == 0 ){
-                cout<< "Found a swap target2 "<< swap_added_student->target_course_name<<endl;
-                
-            }
-            swap_added_student = swap_added_student->next;
-            }   
-        }
-
-        
     }
     else{
         //

@@ -8,10 +8,11 @@ Student_Database::Student_Database(const int capacity) {
     this->students = new Student*[capacity];
     this->capacity = capacity;
     this->size = 0;
-    cout<<"New student database created"<<endl;
+    cout<<"Student_Database: New student database created"<<endl;
 }
 
 Student_Database::Student_Database(const Student_Database& database) {
+    cout<<"Student_Database: Copy Constructor for Student Database is Called"<<endl;
     this->capacity = database.capacity;
     this->size = database.size;
     this->students = new Student*[this->capacity];
@@ -19,7 +20,7 @@ Student_Database::Student_Database(const Student_Database& database) {
 
         this->students[i] = new Student(*database.students[i]);
     }
-    cout<<"Student Database Copied"<<endl;
+    
 }
 
 Student_Database::~Student_Database() {
@@ -54,7 +55,6 @@ void Student_Database::print_all_students() const {
     cout << "PRINTING ALL STUDENT INFORMATION: " << endl;
     //cout << "There are a total of "<<
     for(int i = 0; i < this->size; ++i) {
-        cout<<"details of student"<<endl;
         this->students[i]->print_info();
         cout << endl;
     }

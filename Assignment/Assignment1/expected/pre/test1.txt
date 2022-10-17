@@ -1,5 +1,5 @@
 Enter testcase number: 
-Test Case: 1
+ Test Case: 1
 PRINTING ALL COURSE INFORMATION: 
 PRINTING ALL STUDENT INFORMATION: 
 -------------------

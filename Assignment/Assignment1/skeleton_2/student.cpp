@@ -12,6 +12,7 @@ Student::Student(const char* const name, const int student_id, const double gpa)
     // TODO
     this->name = new char [strlen(name)+1]; 
     strcpy(this->name,name);
+
     this->student_id = student_id; 
     this->gpa = gpa; 
     this->max_credit = STUDENT_INIT_MAX_CREDIT;
@@ -19,13 +20,11 @@ Student::Student(const char* const name, const int student_id, const double gpa)
     this->num_enrolled_course = 0;
     this->enrolled_courses = new char* [STUDENT_MAX_NUM_COURSE];
     this->pending_credit = 0; 
-    this->swap_list = new Swap_List;
-    // Done
+    this->swap_list = new Swap_List; 
 }
 
 Student::Student(const Student& student) {
     // TODO
-    //cout<<"Student class copy constructor called"<<endl;
     name = new char [strlen(student.name)+1];
     strcpy(name,student.name);
     student_id = student.student_id;
@@ -39,9 +38,17 @@ Student::Student(const Student& student) {
         strcpy(enrolled_courses[k],student.enrolled_courses[k]);
     }
     pending_credit = student.pending_credit;
-    // Copy constructor hasn't been implemented
-    // C++ will give copy constructor but is shallow copy
-    // need to implement deep copy in swap_list copy constructor
+    /*
+    Swap_List* student_swap_list = student.get_swap_list();
+    Swap* ptr = nullptr;
+    Swap* head = student_swap_list->get_head();
+    ptr = head;
+    while (ptr->next != nullptr){
+        
+        ptr = ptr->next;
+    }
+    */
+
     swap_list = student.swap_list;
     // Done
 }
@@ -51,15 +58,19 @@ Student::~Student() {
     //cout<<"Student: Destructor of Student called: "<<endl;
     delete [] name;
     //cout<<"deleted name"<<endl;
-    int k1=0;
-    for(int k=0;k<this->get_num_enrolled_course();k++)
-    {
-       delete [] enrolled_courses [k];
-    }
-    delete [] enrolled_courses;
-    
+    //for(int k=0;k<STUDENT_MAX_NUM_COURSE;k++){
+        //if (k<this->get_num_enrolled_course()){
+        //    delete [] enrolled_courses[k];
+        //}
+        //cout<<"Deleting: enrolled_courses: "<<k<<endl;
+    //    delete [] enrolled_courses[k];
+    //}
+    delete [] enrolled_courses; 
+    //cout<<"deleted all enrolled courses (char names)"<<endl;
+    // this will call the destructor for swap_list
+    //Swap_List* swaplist = this->get_swap_list();
     delete swap_list;
-    //cout<<"End of Student Delete"<<endl;
+    //cout<<"deleted swap list"<<endl;
 }
 
 void Student::print_info() const {
@@ -71,7 +82,6 @@ void Student::print_info() const {
     cout << "Num Courses Enrolled: " <<  this->num_enrolled_course << endl;
     cout << "Course Enrolled: " << endl;
     for(int i = 0; i < this->num_enrolled_course; ++i){
-        //cout << "class" <<endl;
         cout << this->enrolled_courses[i] << endl;
     }
     cout << endl;

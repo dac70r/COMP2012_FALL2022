@@ -48,16 +48,19 @@ Student::Student(const Student& student) {
 
 Student::~Student() {
     // TODO
+    //cout<<"Student: Destructor of Student called: "<<endl;
     delete [] name;
-    for(int k=0;k<STUDENT_MAX_NUM_COURSE;k++){
-        if (k<this->get_num_enrolled_course()){
-            delete [] enrolled_courses[k];
-        }
-        else 
-            delete enrolled_courses[k];
+    //cout<<"deleted name"<<endl;
+    for(int k=0;k<this->get_num_enrolled_course();k++){
+        delete [] enrolled_courses[k];
+        //cout<<"Deleting: enrolled_courses: "<<k<<endl;
+        //delete [] enrolled_courses[k];
     }
-    // this will call the destructor for swap_list
+
+    delete [] enrolled_courses;
+    
     delete swap_list;
+    
 }
 
 void Student::print_info() const {
