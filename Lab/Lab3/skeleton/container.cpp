@@ -51,24 +51,44 @@ void Container::display() const // Task 2 - To Do
 {
     std::cout << "\nContainer";
     this->displayBasic();
-    std::cout <<"\n\t\t";
+    std::cout <<"\n\t";
+    std::cout <<"\t";
     if (_num_container>0)
         std::cout<<"#containers: "<<_num_container<<" | ";
-    if (_num_textBox >0){
+    if (_num_textBox >0)
         std::cout<<"#textBoxes: "<<_num_textBox<<" | ";
-    }
-        
     if (_num_button > 0)
         std::cout <<"#buttons: "<<_num_button<<" | ";
     std::cout << "\n";
 
     // Write your code here
+    if (_num_container >0){
+        //std::cout<< "Hello World";
+        for (int i = 0; i < _num_container; i++){
+            if (_containers[i] != nullptr){
+            //std::cout<<"#textBoxes: "<<_num_container<<" | ";
+            _containers[i]->display();
+            }
+        }   
+    }
+
     if (_num_textBox >0){
         //std::cout<< "Hello World";
-        for (int i = 0; i < _num_textBox; i++)
-        if (_textBoxes[i] != nullptr){
-            std::cout<<"#textBoxes: "<<_num_textBox<<" | ";
-        }
+        for (int i = 0; i < _num_textBox; i++){
+            if (_textBoxes[i] != nullptr){
+            //std::cout<<"#textBoxes: "<<_num_textBox<<" | ";
+            _textBoxes[i]->display();
+            }
+        }   
+    }
+    if (_num_button >0){
+        //std::cout<< "Hello World";
+        for (int i = 0; i < _num_button; i++){
+            if (_buttons[i] != nullptr){
+            //std::cout<<"#buttons: "<<_num_button<<" | ";
+            _buttons[i]->display();
+            }
+        }   
     }
     
     
