@@ -54,11 +54,22 @@ void Container::display() const // Task 2 - To Do
     std::cout <<"\n\t\t";
     if (_num_container>0)
         std::cout<<"#containers: "<<_num_container<<" | ";
-    if (_num_textBox >0)
+    if (_num_textBox >0){
         std::cout<<"#textBoxes: "<<_num_textBox<<" | ";
+    }
+        
     if (_num_button > 0)
         std::cout <<"#buttons: "<<_num_button<<" | ";
     std::cout << "\n";
 
     // Write your code here
+    if (_num_textBox >0){
+        //std::cout<< "Hello World";
+        for (int i = 0; i < _num_textBox; i++)
+        if (_textBoxes[i] != nullptr){
+            std::cout<<"#textBoxes: "<<_num_textBox<<" | ";
+        }
+    }
+    
+    
 }

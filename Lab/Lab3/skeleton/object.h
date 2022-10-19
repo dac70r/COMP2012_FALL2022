@@ -25,11 +25,11 @@ public:
     const Pair &getPosition() const;
     const char *getName() const;
 
-    void setSize(int x, int y);
-    void setPosition(int x, int y);
-    void setName(const char *name);
+    void setSize(int x, int y); // mutators 
+    void setPosition(int x, int y); // mutators 
+    void setName(const char *name); // mutators 
 
-    void displayBasic() const;
+    void displayBasic() const; // accessors
 };
 
 #endif

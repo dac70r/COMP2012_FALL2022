@@ -28,6 +28,7 @@ int main()
         tBox11->setPosition(100, 100);
         tBox11->setSize(100, 300);
         tBox11->setText("Welcome");
+        std:: cout<< "Dennis";
 
         mainPage->addTextBox(tBox11);
         mainPage->display();

@@ -49,5 +49,11 @@ void Button::ButtonPressReleased()
 
 void Button::display() const // Task 1 - To Do
 {
-    //
+    
+    std::cout << "\nTextBox";
+    this->displayBasic();
+    std::cout <<"\n\t\t";
+    std::cout <<"TextBoxText=["<<this->getText()<<"]\n";
+    
+     
 }

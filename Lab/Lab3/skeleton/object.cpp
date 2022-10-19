@@ -51,8 +51,10 @@ void Object::setName(const char*name)
 }
 
 void Object::displayBasic() const
-{
+{   
+    //std:: cout<<"Hello World";
     std::cout << "\n\tName: ["<<this->getName()<<"]"; 
+    std:: cout<<"Hello World";
     std::cout <<"\n\tPosition: ("<<this->getPosition().x << ", "<<this->getPosition().y<<")";
     std::cout <<"\n\tSize: (" << this->getSize().x << ", "<<this->getSize().y<<"). ";
 }
