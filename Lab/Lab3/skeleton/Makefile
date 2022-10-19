@@ -11,7 +11,7 @@ DEPS	= $(OBJS:.o=.d)
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(OBJS))
 OBJECTS_leak = $(addprefix $(OBJ_DIR_leak)/,$(OBJS))
 
-all: lab3.out  # lab3_leak.exe 
+all: lab3.out #lab3_leak.exe
 # Remove the '#' in the above line to add lab3_leak.exe,
 # if you want to test memory leakage on your machine. 
 
@@ -31,4 +31,4 @@ $(OBJ_DIR_leak)/%.o: %.cpp
 	g++ $(CPPFLAGS_leak) -MMD -MP -c $< -o $@
 
 clean:
-	rm -rf $(OBJ_DIR)/* $(OBJ_DIR_leak)/* *.out *.exe
+	rm -rf $(OBJ_DIR)/* $(OBJ_DIR_leak)/* *.out *.exe *.zip

@@ -50,7 +50,7 @@ void Button::ButtonPressReleased()
 void Button::display() const // Task 1 - To Do
 {
     
-    std::cout << "\Button";
+    std::cout << "Button";
     this->displayBasic();
     std::cout <<"\n\t\t";
     std::cout <<"ButtonText=["<<this->getText()<<"]\n";

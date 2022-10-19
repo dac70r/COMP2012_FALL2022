@@ -11,7 +11,9 @@ Object::Object()
 
 Object::~Object() // Task 3 - To Do
 {
-    
+    delete [] _name;
+    delete _size;
+    delete _position;
 }
 
 const Pair& Object::getSize() const
