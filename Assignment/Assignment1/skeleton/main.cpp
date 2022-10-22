@@ -153,6 +153,9 @@ int main() {
             system->add(1000, "MATH1003");
             system->add(1000, "LANG1002A");
 
+            //debug
+            system->print_info();
+            cout<<"System debug: Finish printing system one"<<endl;
             System* system2 = new System(*system);
             system2->print_info();
             delete system2;
@@ -438,6 +441,36 @@ int main() {
             system2->print_info();
 
             delete system2;
+            delete system;
+        }
+        break;
+
+        case 21: // Multiple students enrolled in a course and no one is waiting, a student drops (Array Deletion)
+        {
+            System* system = new System(20, 50);
+
+            system->admit("Adam", 1000, 3.8);
+            system->admit("Brian", 1001, 4.3);
+            system->admit("Cindy", 1002, 4.3);
+            system->admit("Desmond", 1003, 4.3);
+            system->admit("Harry", 1004, 2.0);
+            system->admit("Ron", 1005, 2.0);
+            system->admit("Hermione", 1006, 4.3);
+
+            system->add_course("COMP2012", 4, 4); // Quota: 1
+
+            system->add(1000, "COMP2012");
+            system->add(1001, "COMP2012");
+            system->add(1002, "COMP2012");
+            system->add(1003, "COMP2012");
+            system->add(1004, "COMP2012");
+            system->add(1005, "COMP2012");
+            system->add(1006, "COMP2012");
+            
+
+            //system->drop(1004, "COMP2012");
+
+            system->print_info();
             delete system;
         }
         break;

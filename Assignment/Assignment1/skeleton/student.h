@@ -5,7 +5,7 @@ class Swap_List;
 
 class Student {
     private:
-    char* name; // A pointer to a dynamically allocated array
+    char* name; // A pointer to a dynamically allocated array of char(s)
     int student_id;
     double gpa;
     int max_credit;

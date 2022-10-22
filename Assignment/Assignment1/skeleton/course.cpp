@@ -5,16 +5,45 @@
 
 using namespace std;
 
-Course::Course(const char* const name, const int num_credit, const int course_capacity) {
-    // TODO
+Course::Course(const char* const name, const int num_credit, const int course_capacity) :students_enrolled(new int [course_capacity]){
+    // 
+    this->name = new char [strlen(name)+1];
+    strcpy(this->name,name);
+    this->num_credit = num_credit;
+    this->capacity = course_capacity;
+    this->size = 0;
+    this->wait_list = new Wait_List;
+    
+    // Init the values inside the dynamic array to be 0.
+    //this->students_enrolled = new int [course_capacity];
+    //for (int k = 0;k<course_capacity;k++){this->students_enrolled[k]=0;}
 }
 
 Course::Course(const Course& course) {
     // TODO
+    // Perform deep copy of all data members 
+    name = new char [strlen(course.name)+1];
+    strcpy(name,course.name);
+    //
+    num_credit = course.num_credit;
+    capacity = course.capacity;
+    size = course.size;
+    wait_list = new Wait_List;
+    // This is shallow copy, will lead to undefined behaviour
+    wait_list = course.wait_list; 
+    int get_size = course.get_size();
+    students_enrolled = new int [get_size];
+
+    for(int k=0;k<get_size;k++){
+        students_enrolled[k] = course.students_enrolled[k];
+    }
 }
 
 Course::~Course() {
     // TODO
+    delete [] name;
+    delete wait_list; // will call destructor of wait_list
+    delete [] students_enrolled; 
 }
 
 void Course::print_info() const {

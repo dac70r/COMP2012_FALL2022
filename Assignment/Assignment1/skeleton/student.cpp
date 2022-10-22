@@ -20,14 +20,44 @@ Student::Student(const char* const name, const int student_id, const double gpa)
     this->enrolled_courses = new char* [STUDENT_MAX_NUM_COURSE];
     this->pending_credit = 0; 
     this->swap_list = new Swap_List;
+    // Done
 }
 
 Student::Student(const Student& student) {
     // TODO
+    //cout<<"Student class copy constructor called"<<endl;
+    name = new char [strlen(student.name)+1];
+    strcpy(name,student.name);
+    student_id = student.student_id;
+    gpa = student.gpa;
+    max_credit = student.max_credit;
+    curr_credit = student.curr_credit;
+    num_enrolled_course = student.num_enrolled_course;
+    enrolled_courses = new char* [STUDENT_MAX_NUM_COURSE];
+    for (int k = 0;k<student.get_num_enrolled_course();k++){
+        enrolled_courses[k] = new char[strlen(student.enrolled_courses[k])+1];
+        strcpy(enrolled_courses[k],student.enrolled_courses[k]);
+    }
+    pending_credit = student.pending_credit;
+    // Copy constructor hasn't been implemented
+    // C++ will give copy constructor but is shallow copy
+    // need to implement deep copy in swap_list copy constructor
+    swap_list = student.swap_list;
+    // Done
 }
 
 Student::~Student() {
     // TODO
+    delete [] name;
+    for(int k=0;k<STUDENT_MAX_NUM_COURSE;k++){
+        if (k<this->get_num_enrolled_course()){
+            delete [] enrolled_courses[k];
+        }
+        else 
+            delete enrolled_courses[k];
+    }
+    // this will call the destructor for swap_list
+    delete swap_list;
 }
 
 void Student::print_info() const {
