@@ -63,6 +63,7 @@ const char** first_players, int num_first_players, const char** second_players,
 int num_second_players){
 
     for(int k=0;k<30;k++){this->events[k]=nullptr;}
+    //this->events = {nullptr};
     this->num_first_players = num_first_players;
     this->num_second_players = num_second_players;
 
