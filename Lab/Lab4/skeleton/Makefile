@@ -11,7 +11,7 @@ DEPS	= $(OBJS:.o=.d)
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(OBJS))
 OBJECTS_leak = $(addprefix $(OBJ_DIR_leak)/,$(OBJS))
 
-all: create_directory lab4.out lab4_leak.out
+all: create_directory lab4.out #lab4_leak.out
 
 create_directory:
 	mkdir -p $(OBJ_DIR) $(OBJ_DIR_leak)
@@ -19,7 +19,7 @@ create_directory:
 lab4.out: $(OBJECTS) 
 	g++ $(CPPFLAGS) -o $@ $^
 
-lab4_leak.out: $(OBJECTS_leak)
+#lab4_leak.out: $(OBJECTS_leak)
 	g++ -o $@ $(CPPFLAGS_leak) $^
 
 # To include the .d dependency files
@@ -32,5 +32,5 @@ $(OBJ_DIR_leak)/%.o: %.cpp
 	g++ $(CPPFLAGS_leak) -MMD -MP -c $< -o $@
 
 clean:;
-	# del $(OBJ_DIR)/* $(OBJ_DIR_leak)/* *.exe
-	rm -rf $(OBJ_DIR)/* $(OBJ_DIR_leak)/* *.exe
+	# del $(OBJ_DIR)/* $(OBJ_DIR_leak)/* *.exe *.out 
+	rm -rf $(OBJ_DIR)/* $(OBJ_DIR_leak)/* *.exe *.out 

@@ -12,12 +12,9 @@ void Container::display() const //Task 1
 {
     std::cout << "\nContainer";
     this->displayBasic();
-    std::cout <<"\n\t";
+    std::cout <<"\n\n";
+
     //std::cout <<"\t";
-    std::cout << "\nTextbox";
-    this->displayBasic();
-    std::cout <<"\n\t";
-    std::cout <<"\t";
     
 }
 
