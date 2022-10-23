@@ -17,10 +17,11 @@ void TextBox::setText(const char* text)
 
 void TextBox::display() const  //Task 1
 {
-    //std::cout << "\nTextbox";
-   // this->displayBasic();
-   //std::cout <<"\n\t";
-    //std::cout <<"\t";
+    std::cout << "\nTextBox";
+    this->displayBasic();
+    std::cout <<"\n\t";
+    std::cout <<"\tTextBoxText=["<<this->getText()<<"]";
+    std::cout<<"\n";
 
 }
 

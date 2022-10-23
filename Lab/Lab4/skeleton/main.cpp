@@ -21,24 +21,24 @@ int main()
     {
         Container *mainPage = new Container;
         mainPage->setName("MainPage");
-        mainPage->setPosition(0, 0);
+        mainPage->setPosition(10, 20);
         mainPage->setSize(1920, 1080);
 
         Container *page1 = new Container;
         page1->setName("Page1");
-        page1->setPosition(0, 0);
+        page1->setPosition(30, 40);
         page1->setSize(960, 640);
 
         Button *button11 = new Button;
         button11->setName("Button11");
-        button11->setPosition(0, 0);
+        button11->setPosition(50, 60);
         button11->setSize(100, 300);
         button11->setText("Press This!");
         button11->setTrigger("You have pressed button11!");
 
         TextBox *tBox11 = new TextBox;
         tBox11->setName("TextBox11");
-        tBox11->setPosition(0, 0);
+        tBox11->setPosition(70, 80);
         tBox11->setSize(100, 300);
         tBox11->setText("Welcome");
 
@@ -141,7 +141,8 @@ int main()
         tBox11->setPosition(100, 100);
         tBox11->setSize(100, 300);
         tBox11->setText("Welcome");
-
+        /*
+        */
         Button *button11 = new Button;
         button11->setName("Button11");
         button11->setPosition(400, 100);
@@ -179,6 +180,8 @@ int main()
         tBox13->setSize(870, 550);
 
         page1->addObject(tBox11);
+        /*
+        */
         page1->addObject(button11);
         page1->addObject(tBox12);
         page1->addObject(button12);
