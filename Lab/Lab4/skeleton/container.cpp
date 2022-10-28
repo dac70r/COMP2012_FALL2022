@@ -11,6 +11,7 @@ void Container::addObject(Object *object)   //Task 1&3
     else{
         if (_num_object < MAX_OBJECT_NUM){
             _objects[_num_object++] = object;
+            
         }
     }
 
