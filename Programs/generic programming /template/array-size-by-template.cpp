@@ -3,7 +3,7 @@ using namespace std;
 
 // Here, x is a reference to an array of N objects of type T 
 template <typename T, int N>
-int f(T (&x) [N]) { return N; }
+    int f(T (&x) [N]) { return N; }
 
 int main()
 {
