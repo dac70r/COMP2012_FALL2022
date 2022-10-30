@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cstring>      /* File: conversion-constructor-default-arg.cpp */
 class Word
 {
@@ -8,6 +9,10 @@ class Word
     	frequency = k;
         str = new char [strlen(s)+1]; strcpy(str, s);
     }
+    void print_info (){
+        std::cout<<frequency<<"\n";
+        std::cout<<str;
+    }
 };
 
 int main()
@@ -15,4 +20,8 @@ int main()
     Word *p = new Word {"action"};   // Explicit conversion
     Word movie("Titanic");           // Explicit conversion
     Word director = "James Cameron"; // Implicit conversion
+
+    movie.print_info();
+
+    
 }

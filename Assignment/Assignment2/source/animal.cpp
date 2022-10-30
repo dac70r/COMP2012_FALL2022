@@ -91,8 +91,8 @@ int Animal::getRandomMovementIndex(Grid* nextGrid) const {
  * copy in its position.
 */
 void Animal::update(Grid* nextGrid) {
-    // Animal first tries to eat
     // If hunger reaches 0, the animal dies
+    // Otherwise, the animal tries to eat
     if (countdown(hungerCounter, getHungerCooldown())) {
         // ?
     }
@@ -100,7 +100,7 @@ void Animal::update(Grid* nextGrid) {
         // ?
     }
   
-    // Animal then tries to breed if there are animals nearby
+    // Animal then tries to breed if breed cooldown has finished
     if (breedCounter == 1) {
         if (hungerCounter / static_cast<float>(getHungerCooldown()) > 0.7f) {
             // ?
