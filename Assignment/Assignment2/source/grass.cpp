@@ -1,6 +1,7 @@
 #include "grass.h"
 #include "helper.h"
-
+#include <iostream>     // for debugging 
+using namespace std;    // for debugging
 /**
  * TODO: TASK 1
  * 
@@ -12,8 +13,18 @@
  * Otherwise, modify nextGrid accordingly and return true.
 */
 bool putGrass(Grass* grass, Grid* nextGrid, const int x, const int y) {
-    
-    return false;
+    if (nextGrid->getCell(x,y) != nullptr){ // if != nullptr, need to delete grass and return false
+        // delete grass 
+        delete grass; 
+        return false;
+    }
+
+    else{
+        cout<<"Put grass "<<endl;
+        
+        return true;
+    }
+     
 }
 
 /**

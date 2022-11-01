@@ -3,9 +3,9 @@ SRCS = main.cpp animal.cpp board.cpp entity.cpp helper.cpp grass.cpp sheep.cpp w
 OBJS = $(SRCS:.cpp=.o)
 DEPS = $(OBJS:.o=.d)
 
-all: PA2.exe
+all: PA2.out
 
-PA2.exe: $(OBJS)
+PA2.out: $(OBJS)
 	g++ -o $@ $(CPPFLAGS) $^
 
 %.o: %.cpp
@@ -14,7 +14,7 @@ PA2.exe: $(OBJS)
 -include $(DEPS)
 
 clean:
-	del *.o *.exe *.d
+	rm -f *.o *.exe *.d
 # On Windows, use: del *.o *.exe *.d
 # On Linux or MacOS, use: rm -f *.o *.exe *.d
 
