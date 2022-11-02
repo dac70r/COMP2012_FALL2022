@@ -1,49 +1,24 @@
 #include <iostream>
-#include "B.h"
+#include <cstring>
 using namespace std;
 
-inline void func(){
-    cout<<"New York"<<endl;
-}
+class TrivialClass {
+public: 
+  TrivialClass(const std::string& data) :
+    mData(data) {};
 
-class object_a {
-    int a =100;
+  const std::string& getData(const TrivialClass& rhs) const {
+    return rhs.mData;
+  };
+
+private:
+  std::string mData;
 };
 
-class object_b{
-    int b = 200;
-    public: 
-        
-};
+int main() {
+  TrivialClass a("fish");
+  TrivialClass b("heads");
 
-class object_c {
-    int c =300;
-    object_a A;
-    object_b B;
-    public: 
-        void get_A(){cout<<A.a<<endl;}
-};
-
-class A: public B
-{
-    public: 
-        A(){cout<<"Hello World";}
-        void print_info(){cout<<"B is : "<<B::a<<endl;};
-};
-
-int main(){
-
-    A helloworld;
-    A& happy = helloworld;
-    func();
-    A nigga;
-    nigga = happy;
-
-    int p = *(new int);
-    int* p1 = new int;
-    *p1 = 100;
-    cout<<*p1<<endl;
-    
-    helloworld.print_info();
-    return 0;
+  std::cout << "b via a = " << a.getData(b) << std::endl;
+  return 0;
 }
