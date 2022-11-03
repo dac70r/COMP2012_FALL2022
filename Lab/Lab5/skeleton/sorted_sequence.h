@@ -13,6 +13,47 @@ class SortedSequence{
 
     void add(const T &a) {  // Task 2 - To Do
 
+      // k is index used to traverse the array
+      int k = 0;
+      
+      // checks if there is enough space for data
+      if(capacity_ <= size_){
+        // 
+        if(data_ == nullptr){
+          capacity_ = 1;
+          data_ = new T[1];
+          // allocating 1 space only 
+        }
+        else{
+          capacity_ = capacity_*2;
+          T* new_data = new T[capacity_];
+          //copy everything for old array to new_array 
+          for (int k=0; k<size_; k++){
+            new_data[k] = data_[k];
+          }
+          // delete the old array
+          delete [] data_;
+          data_ = nullptr;
+          // assign new_array to the pointer array 
+          data_ = new_data;
+        }
+      }
+
+      // looking for the index of the number in the array 
+      // that is bigger than a 
+      while (k<size_ && data_[k]<a){
+        k++;
+      }
+      //shift the array positions to the right by 1 based 
+      // on the index 
+      for (int j= size_;j>k;j--){
+        data_[j] = data_[j-1];
+      }
+      // add the element to index location 
+      data_[k] = a;
+
+      // always increment the size at the end 
+      size_++;
     }
 
     std::string toString() const {

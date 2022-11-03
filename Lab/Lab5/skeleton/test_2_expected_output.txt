@@ -65,7 +65,11 @@ a e l p p
 
 Test 3:
 Input data:
-(Height:120, Gender:Male, Name:Bob, weight:30) (Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Male, Name:Tom, weight:31) (Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Male, Name:Alice, weight:30) 
+(Height:120, Gender:Male, Name:Bob, weight:30) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:119, Gender:Male, Name:Tom, weight:31)
+ (Height:119, Gender:Female, Name:Alice, weight:31)
+  (Height:119, Gender:Male, Name:Alice, weight:30) 
 Output data:
 After adding (Height:120, Gender:Male, Name:Bob, weight:30) to the sequence:
 capacity: 1, size: 1, data: 
@@ -73,19 +77,29 @@ capacity: 1, size: 1, data:
 
 After adding (Height:119, Gender:Female, Name:Alice, weight:31) to the sequence:
 capacity: 2, size: 2, data: 
-(Height:119, Gender:Female, Name:Alice, weight:31) (Height:120, Gender:Male, Name:Bob, weight:30) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:120, Gender:Male, Name:Bob, weight:30) 
 
 After adding (Height:119, Gender:Male, Name:Tom, weight:31) to the sequence:
 capacity: 4, size: 3, data: 
-(Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Male, Name:Tom, weight:31) (Height:120, Gender:Male, Name:Bob, weight:30) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:119, Gender:Male, Name:Tom, weight:31)
+(Height:120, Gender:Male, Name:Bob, weight:30) 
 
 After adding (Height:119, Gender:Female, Name:Alice, weight:31) to the sequence:
 capacity: 4, size: 4, data: 
-(Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Male, Name:Tom, weight:31) (Height:120, Gender:Male, Name:Bob, weight:30) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:119, Gender:Male, Name:Tom, weight:31) 
+(Height:120, Gender:Male, Name:Bob, weight:30) 
 
 After adding (Height:119, Gender:Male, Name:Alice, weight:30) to the sequence:
 capacity: 8, size: 5, data: 
-(Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Female, Name:Alice, weight:31) (Height:119, Gender:Male, Name:Alice, weight:30) (Height:119, Gender:Male, Name:Tom, weight:31) (Height:120, Gender:Male, Name:Bob, weight:30) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:119, Gender:Female, Name:Alice, weight:31) 
+(Height:119, Gender:Male, Name:Alice, weight:30) 
+(Height:119, Gender:Male, Name:Tom, weight:31) 
+(Height:120, Gender:Male, Name:Bob, weight:30) 
 
 
 

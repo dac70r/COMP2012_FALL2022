@@ -157,6 +157,7 @@ int main() {
                   << " to the sequence:" << std::endl;
         s1.add(a[i]);
         std::cout << s1 << std::endl;
+        //std::cout<<"Finished\n"<<std::endl;
         std::cout << std::endl;
       }
       std::cout << std::endl;
