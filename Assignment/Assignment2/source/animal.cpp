@@ -1,6 +1,7 @@
 #include "animal.h"
 #include "grass.h"
 #include "helper.h"
+#include <typeinfo>
 
 /**
  * TODO: TASK 2
@@ -14,8 +15,20 @@
  * Otherwise, if current cell contains an Animal, delete the passed animal and return false.
 */
 bool Animal::putAnimal(Animal* animal, Grid* nextGrid, const int x, const int y) const {
-    
-    return false;
+    if(nextGrid->getCell(x,y) != nullptr){
+        if (typeid(nextGrid->getCell(x,y))==typeid(Grass)){
+            nextGrid->setCell(animal,x,y);
+            return true;
+        }
+        else{
+            delete animal;
+            return false;
+        }
+    }
+    else{
+        nextGrid->setCell(animal,x,y);
+        return true;
+    }
 }
 
 /**

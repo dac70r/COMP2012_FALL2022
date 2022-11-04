@@ -1,7 +1,7 @@
 #include "grass.h"
 #include "helper.h"
-#include <iostream>     // for debugging 
-using namespace std;    // for debugging
+#include <iostream>
+
 /**
  * TODO: TASK 1
  * 
@@ -13,18 +13,22 @@ using namespace std;    // for debugging
  * Otherwise, modify nextGrid accordingly and return true.
 */
 bool putGrass(Grass* grass, Grid* nextGrid, const int x, const int y) {
-    if (nextGrid->getCell(x,y) != nullptr){ // if != nullptr, need to delete grass and return false
-        // delete grass 
-        delete grass; 
+
+    // If there is something in the cell (!= nullptr)
+    // delete grass 
+    // this function already checks for outofBounds
+    // if out of bounds then return nullptr
+    //std::cout<<"Hello World 1";
+    if (nextGrid->getCell(x,y) != nullptr){
+        delete grass;
         return false;
     }
-
+    
     else{
-        cout<<"Put grass "<<endl;
-        
+        nextGrid->setCell(grass,x,y);
         return true;
-    }
-     
+    }  
+    
 }
 
 /**
@@ -37,6 +41,15 @@ bool putGrass(Grass* grass, Grid* nextGrid, const int x, const int y) {
  * to properly link this Grass with the copy for deletion if necessary.
 */
 void Grass::putSelf(Grid* nextGrid, const int x, const int y) {
+    //std::cout<<"Hello World 2";
+    Grass* new_grass = new Grass(*this);
+    //putGrass(new_grass,nextGrid,x,y);
+    if (putGrass(new_grass, nextGrid, x, y)==true){
+        
+        Entity::setNextSelf(new_grass);
+    }
+    //Grass* copy_grass = Grass(*this);
+    //putGrass(copy_grass,nextG
     
 }
 
@@ -49,7 +62,12 @@ void Grass::putSelf(Grid* nextGrid, const int x, const int y) {
  * You may use putGrass() implemented above.
 */
 void Grass::putClone(Grid* nextGrid, const int x, const int y) const {
-    
+    //std::cout<<"Hello World 3";
+    Grass* new_grass = new Grass(this->getBoard());
+    //std::cout<<"Hello World 3.1";
+    //nextGrid->setCell(new_grass,x,y);
+    putGrass(new_grass,nextGrid,x,y);
+    //std::cout<<"Hello World 3.2\n";
 }
 
 /**
@@ -62,5 +80,41 @@ void Grass::putClone(Grid* nextGrid, const int x, const int y) const {
  * checking if current cell has another Entity; it is done in putGrass().
 */
 void Grass::update(Grid* nextGrid) {
-    
+
+   // this->getBoard()->print();
+    bool countdownReached = countdown(spreadCounter, SPREAD_COOLDOWN);
+    if (countdownReached) {
+        // code that is executed once every COOLDOWN steps
+        //std::cout<<"Hello World";
+        //std::cout<<this->getX()<<"\n";
+        //std::cout<<this->getY()<<"\n";
+        int x_cor = this->getX();
+        int y_cor = this->getY();
+        putSelf(nextGrid,this->getX(),this->getY());
+        putClone(nextGrid,x_cor+1,y_cor);
+        putClone(nextGrid,x_cor-1,y_cor);
+        putClone(nextGrid,x_cor,y_cor+1);
+        putClone(nextGrid,x_cor,y_cor-1);
+    }
+    else {
+        // code to be executed during "cooldown" steps
+        //std::cout<<"Hello World 2";
+        putSelf(nextGrid,this->getX(),this->getY());
+    }
+    //if(countdown(x,SPREAD_COOLDOWN)==true){
+        //std::cout<<"Hello World YOLO\n";
+        
+        //putClone(nextGrid,this->getX(),this->getY());
+        //putClone(nextGrid,this->getX(),this->getY()+1);
+        //putClone(nextGrid,this->getX(),this->getY()-1);
+        //if(nextGrid->getCell(this->getX(),this->getY())==nullptr){
+        //    std::cout<<"NULL";
+        //}
+        //else
+        //    std::cout<<"Got something here";
+        //putClone(nextGrid,this->getX()+1,this->getY());
+        //x++;
+    //}
+   //else
+        //std::cout<<"Hello World 5";
 }
