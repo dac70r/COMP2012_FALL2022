@@ -1,6 +1,7 @@
 #include "sheep.h"
 #include "grass.h"
 #include "helper.h"
+#include <typeinfo>
 
 /**
  * TODO: TASK 3
@@ -10,6 +11,13 @@
  * Hint: putAnimal() can be used.
 */
 void Sheep::putSelf(Grid* nextGrid, const int x, const int y) {
+    //std:: cout<<"Debugging message: Sheep putSelf called\n";
+    Sheep* new_sheep = new Sheep(*this);
+
+    if (putAnimal(new_sheep, nextGrid, x, y)==true){
+        //std::cout<<"Debugging message: Sheep putAnimal\n";
+        Entity:: setNextSelf(new_sheep);
+    }
     
 }
 
@@ -21,7 +29,10 @@ void Sheep::putSelf(Grid* nextGrid, const int x, const int y) {
  * Hint: putAnimal() can be used.
 */
 void Sheep::putClone(Grid* nextGrid, const int x, const int y) const {
-    
+    //std:: cout<<"Debugging message: Sheep putClone called\n";
+    Sheep* new_sheep = new Sheep(this->getBoard());
+
+    putAnimal(new_sheep, nextGrid,x,y);
 }
 
 /**
@@ -46,8 +57,47 @@ void Sheep::eat(Grid* nextGrid) {
             continue;
         }
 
+        //Grass* new_grassy = dynamic_cast<Grass*>(adjEntity);
+
+        if ((adjEntity)){
+            //Grass* new_grassy = dynamic_cast<Grass*>(adjEntity);
+            //Sheep* new_sheepy = dynamic_cast<Sheep*>(adjEntity);
+            ////if (new_grassy == nullptr){std::cout<<"Hello World\n";} // error message
+            
+            //char s [] = "5Sheep";
+            //char g [] = "5Grass";
+            //char w [] = "4Wolf";
+            /*
+            if(strcmp(w,typeid(*adjEntity).name())==0){
+                //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
+                continue;
+            }
+
+            if(strcmp(s,typeid(*adjEntity).name())==0){
+                //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
+                continue;
+            }
+            */
+            
+
+            //if(strcmp(g,typeid(*adjEntity).name())==0){
+                //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
+                //std::cout<<"Found Grass! \n";
+                if(typeid(*adjEntity) == typeid(Grass)){
+                    //std::cout<<"Hello World\n";
+                
+                adjEntity->removeSelf(nextGrid);
+                //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") eats Grass at ("<<adjEntity->getX()<<","<<adjEntity->getY()<<")\n";
+                setHungerCounter(getHungerCooldown());
+                return;}
+            //}
+            
+        }
         // ?
+        //std:: cout<<"Debugging message: Sheep eat called\n";
+        
     }
+    //putSelf(nextGrid,this->getX(),this->getY());
 }
 
 /**
@@ -74,6 +124,81 @@ void Sheep::breed(Grid* nextGrid) {
         }
 
         // ?
+        //std:: cout<<"Debugging message: Sheep breed called\n";
+        if (adjEntity){
+            /*
+            char s [] = "5Sheep";
+            char g [] = "5Grass";
+            char w [] = "4Wolf";
+            if(strcmp(w,typeid(*adjEntity).name())==0){
+                //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
+                continue;
+            }
+
+            if(strcmp(g,typeid(*adjEntity).name())==0){
+                continue;
+            }
+            */
+            
+
+            //if(strcmp(s,typeid(*adjEntity).name())==0){
+                if(typeid(*adjEntity) == typeid(Sheep)){
+                //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
+                //adjEntity->removeSelf(nextGrid);
+                int x = getRandomMovementIndex(nextGrid);
+                switch(x) {
+                    case 0:
+                        // code block
+                        putClone(nextGrid,this->getX()-1,this->getY()-1);
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 1:
+                        // code block
+                        putClone(nextGrid,this->getX()-1,this->getY());
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 2:
+                        // code block
+                        putClone(nextGrid,this->getX()-1,this->getY()+1);
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 3:
+                        // code block
+                        putClone(nextGrid,this->getX(),this->getY()-1);
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 5:
+                        // code block
+                        putClone(nextGrid,this->getX(),this->getY()+1);
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 6:
+                        // code block
+                        putClone(nextGrid,this->getX()+1,this->getY()-1);
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 7:
+                        // code block
+                        putClone(nextGrid,this->getX()+1,this->getY());
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    case 8:
+                        // code block
+                        putClone(nextGrid,this->getX()+1,this->getY()+1);
+                        //std::cout<<"Spawn sheep!\n";
+                        break;
+                    default:
+                        // code block
+                        std::cout<<"Error!\n";
+                }
+                setBreedCounter(getBreedCooldown());
+                return;
+            }
+            //}
+
+            
+            
+        }
     }
 }
 
@@ -85,5 +210,63 @@ void Sheep::breed(Grid* nextGrid) {
  * Otherwise, place it in the current position.
 */
 void Sheep::move(Grid* nextGrid) {
-    
+    //std:: cout<<"Debugging message: Sheep move called\n";
+    int x = getRandomMovementIndex(nextGrid);
+    switch(x) {
+        case 0:
+            // code block
+            putSelf(nextGrid,this->getX()-1,this->getY()-1);
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()-1<<","<<this->getY()-1<<")\n";
+            break;
+        case 1:
+            // code block
+            putSelf(nextGrid,this->getX()-1,this->getY());
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()-1<<","<<this->getY()<<")\n";
+            break;
+        case 2:
+            // code block
+            putSelf(nextGrid,this->getX()-1,this->getY()+1);
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()-1<<","<<this->getY()+1<<")\n";
+            break;
+        case 3:
+            // code block
+            putSelf(nextGrid,this->getX(),this->getY()-1);
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()<<","<<this->getY()-1<<")\n";
+            break;
+        case 5:
+            // code block
+            putSelf(nextGrid,this->getX(),this->getY()+1);
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()<<","<<this->getY()+1<<")\n";
+            break;
+        case 6:
+            // code block
+            putSelf(nextGrid,this->getX()+1,this->getY()-1);
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()+1<<","<<this->getY()-1<<")\n";
+            break;
+        case 7:
+            // code block
+            putSelf(nextGrid,this->getX()+1,this->getY());
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()+1<<","<<this->getY()<<")\n";
+            break;
+        case 8:
+            // code block
+            putSelf(nextGrid,this->getX()+1,this->getY()+1);
+            //std::cout<<"Moved sheep!\n";
+            //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") moves to ("<<this->getX()+1<<","<<this->getY()+1<<")\n";
+            break;
+        default:
+            // code block
+            std::cout<<"Error!\n";
+            putSelf(nextGrid,this->getX(),this->getY());
+    }
+
+    setBreedCounter(getBreedCooldown());
+    return;
 }

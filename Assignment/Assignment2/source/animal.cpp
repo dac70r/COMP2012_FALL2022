@@ -2,6 +2,7 @@
 #include "grass.h"
 #include "helper.h"
 #include <typeinfo>
+#include <iostream>
 
 /**
  * TODO: TASK 2
@@ -15,20 +16,28 @@
  * Otherwise, if current cell contains an Animal, delete the passed animal and return false.
 */
 bool Animal::putAnimal(Animal* animal, Grid* nextGrid, const int x, const int y) const {
-    if(nextGrid->getCell(x,y) != nullptr){
-        if (typeid(nextGrid->getCell(x,y))==typeid(Grass)){
+    
+    
+    if (nextGrid->getCell(x,y) != nullptr){
+
+        if (typeid(*(nextGrid->getCell(x,y)))==typeid(Grass)){
+           // std::cout<<"It's just grass\n";
+            nextGrid->deleteCell(x,y);
             nextGrid->setCell(animal,x,y);
             return true;
         }
         else{
             delete animal;
+            //std::cout<<"Debugging message: deleted animal. \n";
             return false;
         }
     }
+    
     else{
         nextGrid->setCell(animal,x,y);
         return true;
-    }
+    }  
+    
 }
 
 /**
@@ -98,7 +107,7 @@ int Animal::getRandomMovementIndex(Grid* nextGrid) const {
  * Otherwise, call eat() to update the grid and hunger.
  * 
  * Next, if breedCounter is 1 and hungerCounter is more than 70% of maximum value, the animal tries to breed
- * by calling breed(). If breedCounter is greater than 1, do countdown instead.
+ * by eed(). If breedCounter is greater than 1, do countdown instead.calling br
  * 
  * Finally, countdown the moveCounter. If it reaches 0, call move() to move the animal. Otherwise, put the animal's
  * copy in its position.
@@ -106,17 +115,33 @@ int Animal::getRandomMovementIndex(Grid* nextGrid) const {
 void Animal::update(Grid* nextGrid) {
     // If hunger reaches 0, the animal dies
     // Otherwise, the animal tries to eat
+    //std::cout<<typeid(this).name();
+    //if(typeid(this).name()==typeid(Sheep))
+
+        // code to be executed during "cooldown" steps
+        //std::cout<<"Hello World 2";
+    //putSelf(nextGrid,this->getX(),this->getY());
+
+    
     if (countdown(hungerCounter, getHungerCooldown())) {
         // ?
+        //std::cout<<"Debugging message: Animal hungerCounter reached. \n";
+        return; 
     }
     else {
         // ?
+        // Animal will call eat to update grid and hunger 
+        //std::cout<<"Debugging message: Animal eating\n";
+        eat(nextGrid);
     }
   
     // Animal then tries to breed if breed cooldown has finished
     if (breedCounter == 1) {
         if (hungerCounter / static_cast<float>(getHungerCooldown()) > 0.7f) {
             // ?
+            // Animal attempts to breed if breed cooldown has finished
+            //std::cout<<"Debugging message: Animal breeding\n";
+            breed(nextGrid);
         }
     }
     else {
@@ -126,8 +151,20 @@ void Animal::update(Grid* nextGrid) {
     // Animal finally moves if move cooldown is reached
     if (countdown(moveCounter, getMoveCooldown())) {
         // ?
+        // Animal attempts move 
+        //std::cout<<"Debugging message: Animal moving.\n"; 
+        move(nextGrid);
+
     }
     else {
         // ?
+        // put animal's copy in it's position
+        //std::cout<<"Debugging message: Animal put copy.\n";
+        //std::cout<<"X: "<<this->getX()<<"Y: "<<this->getY();
+        putSelf(nextGrid,this->getX(),this->getY());
+        //putAnimal(this, nextGrid, this->getX(),this->getY());
+        //std::cout<<"Debugging message: put Animal success\n";
     }
+    
+    
 }
