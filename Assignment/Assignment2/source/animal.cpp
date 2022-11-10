@@ -1,8 +1,7 @@
 #include "animal.h"
 #include "grass.h"
 #include "helper.h"
-#include <typeinfo>
-#include <iostream>
+//#include <iostream>
 
 /**
  * TODO: TASK 2

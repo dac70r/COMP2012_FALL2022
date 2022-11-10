@@ -1,7 +1,6 @@
 #include "sheep.h"
 #include "grass.h"
 #include "helper.h"
-#include <typeinfo>
 
 /**
  * TODO: TASK 3
@@ -83,7 +82,8 @@ void Sheep::eat(Grid* nextGrid) {
             //if(strcmp(g,typeid(*adjEntity).name())==0){
                 //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
                 //std::cout<<"Found Grass! \n";
-                if(typeid(*adjEntity) == typeid(Grass)){
+                if(dynamic_cast<Grass*>(adjEntity)){
+                //if(typeid(*adjEntity) == typeid(Grass)){
                     //std::cout<<"Hello World\n";
                 
                 adjEntity->removeSelf(nextGrid);
@@ -142,9 +142,12 @@ void Sheep::breed(Grid* nextGrid) {
             
 
             //if(strcmp(s,typeid(*adjEntity).name())==0){
-                if(typeid(*adjEntity) == typeid(Sheep)){
+                if(dynamic_cast<Sheep*>(adjEntity)){
+                   //std::cout<<"Hello World\n";
+                //if(typeid(*adjEntity) == typeid(Sheep)){
                 //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
                 //adjEntity->removeSelf(nextGrid);
+                //std::cout<<"Hello World\n";
                 int x = getRandomMovementIndex(nextGrid);
                 switch(x) {
                     case 0:
@@ -264,9 +267,10 @@ void Sheep::move(Grid* nextGrid) {
         default:
             // code block
             std::cout<<"Error!\n";
+            return;
             putSelf(nextGrid,this->getX(),this->getY());
     }
 
-    setBreedCounter(getBreedCooldown());
+    //setMoveCounter(getBreedCooldown());
     return;
 }
