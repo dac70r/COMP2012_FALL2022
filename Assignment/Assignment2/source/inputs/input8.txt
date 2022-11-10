@@ -18,7 +18,7 @@
 |   SSWSS       W    |
 |   SSSSS            |
 |                    |
-|                    |
+|       SS           |
 |                    |
 |     W         W    |
 |                    |

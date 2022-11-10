@@ -149,7 +149,8 @@ void Sheep::breed(Grid* nextGrid) {
                 //adjEntity->removeSelf(nextGrid);
                 //std::cout<<"Hello World\n";
                 int x = getRandomMovementIndex(nextGrid);
-                switch(x) {
+                if(x>=0){
+                    switch(x) {
                     case 0:
                         // code block
                         putClone(nextGrid,this->getX()-1,this->getY()-1);
@@ -192,15 +193,14 @@ void Sheep::breed(Grid* nextGrid) {
                         break;
                     default:
                         // code block
+                        // should not reach here
                         std::cout<<"Error!\n";
+                    }
                 }
                 setBreedCounter(getBreedCooldown());
                 return;
             }
-            //}
-
-            
-            
+    
         }
     }
 }
@@ -215,7 +215,8 @@ void Sheep::breed(Grid* nextGrid) {
 void Sheep::move(Grid* nextGrid) {
     //std:: cout<<"Debugging message: Sheep move called\n";
     int x = getRandomMovementIndex(nextGrid);
-    switch(x) {
+    if (x>=0){
+        switch(x) {
         case 0:
             // code block
             putSelf(nextGrid,this->getX()-1,this->getY()-1);
@@ -266,11 +267,12 @@ void Sheep::move(Grid* nextGrid) {
             break;
         default:
             // code block
+            // should not reach here
             std::cout<<"Error!\n";
             return;
-            putSelf(nextGrid,this->getX(),this->getY());
+            //putSelf(nextGrid,this->getX(),this->getY());
+        }
     }
-
     //setMoveCounter(getBreedCooldown());
     return;
 }

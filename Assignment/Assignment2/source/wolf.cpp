@@ -78,6 +78,10 @@ void Wolf::breed(Grid* nextGrid) {
         if (i == 4) continue;
         int adjX = getX() + getAdjX(i);
         int adjY = getY() + getAdjY(i);
+        //std::cout<<getX();
+        //std::cout<<getY();
+        //std::cout<<getAdjX(i);
+        //std::cout<<getAdjY(i);
         Entity* adjEntity = getBoard()->getGrid()->getCell(adjX, adjY);
 
         if (!adjEntity) {
@@ -86,13 +90,14 @@ void Wolf::breed(Grid* nextGrid) {
         }
 
         // ?
-        //if(dynamic_cast<Wolf*>(adjEntity)){
-        if(typeid(*adjEntity) == typeid(Wolf)){
+        if(dynamic_cast<Wolf*>(adjEntity)){
+        //if(typeid(*adjEntity) == typeid(Wolf)){
                 //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
                 //adjEntity->removeSelf(nextGrid);
                 //std::cout<<"Breeding Wolf\n";
                 int x = getRandomMovementIndex(nextGrid);
-                switch(x) {
+                if (x>=0){
+                    switch(x) {
                     case 0:
                         // code block
                         putClone(nextGrid,this->getX()-1,this->getY()-1);
@@ -136,8 +141,8 @@ void Wolf::breed(Grid* nextGrid) {
                     default:
                         // code block
                         //std::cout<<"Error!\n";
-                        return;
-                        
+                        return;     
+                    }
                 }
                 setBreedCounter(getBreedCooldown());
                 return;
@@ -187,7 +192,8 @@ void Wolf::move(Grid* nextGrid) {
     else {
         // No sheep found, move randomly
         int x = getRandomMovementIndex(nextGrid);
-        switch(x) {
+        if(x>=0){
+            switch(x) {
         case 0:
             // code block
             putSelf(nextGrid,this->getX()-1,this->getY()-1);
@@ -240,8 +246,10 @@ void Wolf::move(Grid* nextGrid) {
             // code block
             return;
             //std::cout<<"Error!\n";
-            putSelf(nextGrid,this->getX(),this->getY());
+            //putSelf(nextGrid,this->getX(),this->getY());
+            }
         }
+        
     }
     //setMoveCounter(getBreedCooldown());
     //std:: cout<<"Debugging message: Sheep move called\n";
