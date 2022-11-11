@@ -32,6 +32,7 @@ void Sheep::putClone(Grid* nextGrid, const int x, const int y) const {
     Sheep* new_sheep = new Sheep(this->getBoard());
 
     putAnimal(new_sheep, nextGrid,x,y);
+    //Entity::setNextSelf(new_sheep);
 }
 
 /**
@@ -194,7 +195,8 @@ void Sheep::breed(Grid* nextGrid) {
                     default:
                         // code block
                         // should not reach here
-                        std::cout<<"Error!\n";
+                        return;
+                        std::cout<<"Error!\n"; // won't reach here but just for debugging purpose 
                     }
                 }
                 setBreedCounter(getBreedCooldown());
@@ -214,7 +216,24 @@ void Sheep::breed(Grid* nextGrid) {
 */
 void Sheep::move(Grid* nextGrid) {
     //std:: cout<<"Debugging message: Sheep move called\n";
+    /*
+    for (int x=0; x<BOARD_SIZE_W; ++x) {
+        for (int y=0; y<BOARD_SIZE_H; ++y) {
+
+            // ?
+            double wolf_x = this->getX();
+            double wolf_y = this->getY();
+            Entity* new_entity = nextGrid->getCell(x,y);
+            if (new_entity!= nullptr){
+                std::cout<<x<<"\n";
+                std::cout<<y<<"\n";
+            }         
+        }
+    }
+    */
+
     int x = getRandomMovementIndex(nextGrid);
+    // already checks if x == -1, which is a false case. Will only accept anything that is not -1 
     if (x>=0){
         switch(x) {
         case 0:
@@ -268,8 +287,8 @@ void Sheep::move(Grid* nextGrid) {
         default:
             // code block
             // should not reach here
-            std::cout<<"Error!\n";
             return;
+            std::cout<<"Error!\n";
             //putSelf(nextGrid,this->getX(),this->getY());
         }
     }

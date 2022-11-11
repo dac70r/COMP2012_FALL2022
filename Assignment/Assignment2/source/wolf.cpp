@@ -55,12 +55,13 @@ void Wolf::eat(Grid* nextGrid) {
         if ((adjEntity)){
                 //if(typeid(*adjEntity) == typeid(Sheep)){
                 if(dynamic_cast<Sheep*>(adjEntity)){
-                    //std::cout<<"Hello World\n";
+                    //std::cout<<"Hello Sheep\n";
                 
                 adjEntity->removeSelf(nextGrid);
                 //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") eats Grass at ("<<adjEntity->getX()<<","<<adjEntity->getY()<<")\n";
                 setHungerCounter(getHungerCooldown());
-                return;}
+                return;
+            }
             //}
             
         }
@@ -91,10 +92,12 @@ void Wolf::breed(Grid* nextGrid) {
 
         // ?
         if(dynamic_cast<Wolf*>(adjEntity)){
+            //std::cout<<"Hello Wolf\n";
         //if(typeid(*adjEntity) == typeid(Wolf)){
                 //std::cout<<"Found "<<typeid(*adjEntity).name()<<"\n";
                 //adjEntity->removeSelf(nextGrid);
                 //std::cout<<"Breeding Wolf\n";
+                //std::cout<<"Hello Wolf\n";
                 int x = getRandomMovementIndex(nextGrid);
                 if (x>=0){
                     switch(x) {
@@ -171,24 +174,85 @@ void Wolf::move(Grid* nextGrid) {
     // First, find a sheep to target
     
     // ? 
-    int shortest_distance = 0;
-    
+    //std::cout<<this->getX()<<" ";
+    //std::cout<<this->getY()<<" this \n";
+    //std::cout<<"All wolves move\n";
+    double shortest_distance_squared = 0;
+    double current_distance_squared = 0;
+    int shortest_sheep_x = 0;
+    int shortest_sheep_y = 0;
+
+    Grid* this_grid = this->getBoard()->getGrid();
+
     for (int x=0; x<BOARD_SIZE_W; ++x) {
         for (int y=0; y<BOARD_SIZE_H; ++y) {
-
+            Entity* new_entity = this_grid->getCell(x,y);
+            /*
+            if(dynamic_cast<Sheep*>(new_entity)){
+                std::cout<<"Found Sheep at ("<<new_entity->getX()<<","<<new_entity->getY()<<")\n";
+            }*/
+            
             // ?
             
-            Entity* new_entity = nextGrid->getCell(x,y);
+            double wolf_x = this->getX();
+            double wolf_y = this->getY();
+            
+            //if (new_entity!= nullptr){
+            //    std::cout<<x<<"\n";
+            //   std::cout<<y<<"\n";
+            //}
 
-
+            //std::cout<<"We are not at ("<<x<<","<<y<<") and it is "<<new_entity<<"\n";
+            
+            if(dynamic_cast<Sheep*>(new_entity)){
+                // debugging message 
+                //std::cout<<"Wolf is currently at ("<<this->getX()<<","<<this->getY()<<")\n";
+                //std::cout<<"Found Sheep at ("<<new_entity->getX()<<","<<new_entity->getY()<<")\n";
+                double new_entity_x = new_entity->getX();
+                double new_entity_y = new_entity->getY();
+                double euclidean_x = (wolf_x - new_entity_x) * (wolf_x - new_entity_x);
+                double euclidean_y = (wolf_y - new_entity_y) * (wolf_y - new_entity_y);
+                current_distance_squared = (euclidean_x + euclidean_y);
+                if (shortest_distance_squared == 0){
+                    shortest_distance_squared = current_distance_squared;
+                    //std::cout<<"Shortest distance: "<<shortest_distance_squared<<"\n";
+                    shortest_sheep_x = new_entity->getX();
+                    shortest_sheep_y = new_entity->getY();
+                }
+                if(current_distance_squared<shortest_distance_squared){
+                    shortest_distance_squared = current_distance_squared;
+                    shortest_sheep_x = new_entity->getX();
+                    shortest_sheep_y = new_entity->getY();
+                }   
+            }
+            
+            
         }
     }
-
-    if (false) { // Edit this line with the appropriate condition
+    //std::cout<<"Shortest Distance Squared :"<<shortest_distance_squared<<"\n";
+    if (shortest_distance_squared) { // Edit this line with the appropriate condition
         // If a sheep with the closest distance is found, try to move towards it
+        //shortest_distance_squared = current_distance_squared;
         
         // ?
+        int new_x = 0;
+        int new_y =0;
+        if(shortest_sheep_x>this->getX()){
+            new_x = this->getX()+1;
+        }
+        if (shortest_sheep_x<this->getX()){
+            new_x = this->getX()-1;
+        }
+        if(shortest_sheep_y>this->getY()){
+            new_y = this->getY()+1;
+        }
+        if(shortest_sheep_y<this->getY()){
+            new_y = this->getY()-1;
+        }
+        this->putSelf(nextGrid,new_x,new_y);
+        return;
     }
+
     else {
         // No sheep found, move randomly
         int x = getRandomMovementIndex(nextGrid);

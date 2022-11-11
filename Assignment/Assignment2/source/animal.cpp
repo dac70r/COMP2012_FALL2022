@@ -19,7 +19,8 @@ bool Animal::putAnimal(Animal* animal, Grid* nextGrid, const int x, const int y)
     
     if (nextGrid->getCell(x,y) != nullptr){
 
-        if (typeid(*(nextGrid->getCell(x,y)))==typeid(Grass)){
+        //if (typeid(*(nextGrid->getCell(x,y)))==typeid(Grass)){
+        if (dynamic_cast<Grass*>(nextGrid->getCell(x,y))){
            // std::cout<<"It's just grass\n";
             nextGrid->deleteCell(x,y);
             nextGrid->setCell(animal,x,y);

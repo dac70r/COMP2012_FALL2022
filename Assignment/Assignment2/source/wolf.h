@@ -3,9 +3,9 @@
 
 #include "animal.h"
 
-const int WOLF_HUNGER_COOLDOWN = 4*4; //20 * 3;
-const int WOLF_BREED_COOLDOWN =  2*4; //10 * 3;
-const int WOLF_MOVE_COOLDOWN = 4; //3;
+const int WOLF_HUNGER_COOLDOWN = 20 * 3;
+const int WOLF_BREED_COOLDOWN =  10 * 3;
+const int WOLF_MOVE_COOLDOWN = 3;
 
 class Wolf: public Animal {
 
