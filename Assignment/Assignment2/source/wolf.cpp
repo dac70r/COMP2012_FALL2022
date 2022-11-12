@@ -58,6 +58,8 @@ void Wolf::eat(Grid* nextGrid) {
                     //std::cout<<"Hello Sheep\n";
                 
                 adjEntity->removeSelf(nextGrid);
+                
+                //std::cout<<"Wolf at ("<<this->getX()<<","<<this->getY()<<") eats Sheep at ("<<adjEntity->getX()<<","<<adjEntity->getY()<<")\n";
                 //std::cout<<"Sheep at ("<<this->getX()<<","<<this->getY()<<") eats Grass at ("<<adjEntity->getX()<<","<<adjEntity->getY()<<")\n";
                 setHungerCounter(getHungerCooldown());
                 return;
@@ -183,46 +185,40 @@ void Wolf::move(Grid* nextGrid) {
     int shortest_sheep_y = 0;
 
     Grid* this_grid = this->getBoard()->getGrid();
-
+    Entity* shortest_distance_entity = nullptr;
     for (int x=0; x<BOARD_SIZE_W; ++x) {
         for (int y=0; y<BOARD_SIZE_H; ++y) {
             Entity* new_entity = this_grid->getCell(x,y);
-            /*
-            if(dynamic_cast<Sheep*>(new_entity)){
-                std::cout<<"Found Sheep at ("<<new_entity->getX()<<","<<new_entity->getY()<<")\n";
-            }*/
+            //Entity* new_new_entity = nextGrid->getCell
+           // if(dynamic_cast<Sheep*>(new_entity)){
+                //std::cout<<"Found Sheep at ("<<new_entity->getX()<<","<<new_entity->getY()<<")\n";
+           // }
             
-            // ?
-            
-            double wolf_x = this->getX();
-            double wolf_y = this->getY();
-            
-            //if (new_entity!= nullptr){
-            //    std::cout<<x<<"\n";
-            //   std::cout<<y<<"\n";
-            //}
-
-            //std::cout<<"We are not at ("<<x<<","<<y<<") and it is "<<new_entity<<"\n";
-            
-            if(dynamic_cast<Sheep*>(new_entity)){
+            if(dynamic_cast<Sheep*>(new_entity) && new_entity->isRemoved()!= true){
                 // debugging message 
                 //std::cout<<"Wolf is currently at ("<<this->getX()<<","<<this->getY()<<")\n";
                 //std::cout<<"Found Sheep at ("<<new_entity->getX()<<","<<new_entity->getY()<<")\n";
+                double wolf_x = this->getX();
+                double wolf_y = this->getY();
                 double new_entity_x = new_entity->getX();
                 double new_entity_y = new_entity->getY();
+
                 double euclidean_x = (wolf_x - new_entity_x) * (wolf_x - new_entity_x);
                 double euclidean_y = (wolf_y - new_entity_y) * (wolf_y - new_entity_y);
                 current_distance_squared = (euclidean_x + euclidean_y);
+                //std::cout<<"Distance between this wolf at ("<<this->getX()<<","<<this->getY()<<") and this Sheep at ("<<new_entity->getX()<<","<<new_entity->getY()<<") is :"<<current_distance_squared<<"\n";
                 if (shortest_distance_squared == 0){
                     shortest_distance_squared = current_distance_squared;
-                    //std::cout<<"Shortest distance: "<<shortest_distance_squared<<"\n";
+                //    std::cout<<"Shortest distance: "<<shortest_distance_squared<<"\n";
                     shortest_sheep_x = new_entity->getX();
                     shortest_sheep_y = new_entity->getY();
+                    shortest_distance_entity = new_entity;
                 }
                 if(current_distance_squared<shortest_distance_squared){
                     shortest_distance_squared = current_distance_squared;
                     shortest_sheep_x = new_entity->getX();
                     shortest_sheep_y = new_entity->getY();
+                    shortest_distance_entity = new_entity;
                 }   
             }
             
@@ -230,14 +226,15 @@ void Wolf::move(Grid* nextGrid) {
         }
     }
     //std::cout<<"Shortest Distance Squared :"<<shortest_distance_squared<<"\n";
-    if (shortest_distance_squared) { // Edit this line with the appropriate condition
+    //std::cout<<"Sheep with the shortest distance can be found at ("<<shortest_sheep_x<<","<<shortest_sheep_y<<")\n";
+    if (/*shortest_distance_entity->isRemoved() == false*/shortest_distance_squared) { // Edit this line with the appropriate condition
         // If a sheep with the closest distance is found, try to move towards it
         //shortest_distance_squared = current_distance_squared;
         
         // ?
-        int new_x = 0;
-        int new_y =0;
-        if(shortest_sheep_x>this->getX()){
+        int new_x = this->getX();
+        int new_y = this->getY();
+        if(shortest_sheep_x>this->getX()){ // if sheep is right of this: this_x must add 1
             new_x = this->getX()+1;
         }
         if (shortest_sheep_x<this->getX()){
@@ -249,8 +246,24 @@ void Wolf::move(Grid* nextGrid) {
         if(shortest_sheep_y<this->getY()){
             new_y = this->getY()-1;
         }
-        this->putSelf(nextGrid,new_x,new_y);
-        return;
+        
+        // checks if destination is occupied. If yes, stay in current position.
+        // otherwise, move to new position. 
+        if(dynamic_cast<Animal*>(this_grid->getCell(new_x,new_y))==nullptr && dynamic_cast<Animal*>(nextGrid->getCell(new_x,new_y))==nullptr){
+            //if(dynamic_cast<Grass*>(this_grid->getCell(new_x,new_y))!=nullptr){ // Got grass 
+                //this->putSelf(nextGrid,new_x,new_y);
+            //}
+            //else{
+            
+            this->putSelf(nextGrid,new_x,new_y);    
+            //std::cout<<"New location of Wolf is :("<<new_x<<","<<new_y<<")"<<"\n";
+            //}         
+        }
+        else{
+            
+            this->putSelf(nextGrid,this->getX(),this->getY());
+            //std::cout<<"Wolf stays in ("<<this->getX()<<","<<this->getY()<<") because of obstacle in ("<<new_x<<","<<new_y<<")\n";
+        }
     }
 
     else {
@@ -308,8 +321,8 @@ void Wolf::move(Grid* nextGrid) {
             break;
         default:
             // code block
-            return;
             //std::cout<<"Error!\n";
+            return;
             //putSelf(nextGrid,this->getX(),this->getY());
             }
         }

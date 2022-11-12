@@ -196,7 +196,7 @@ void Sheep::breed(Grid* nextGrid) {
                         // code block
                         // should not reach here
                         return;
-                        std::cout<<"Error!\n"; // won't reach here but just for debugging purpose 
+                        //std::cout<<"Error!\n"; // won't reach here but just for debugging purpose 
                     }
                 }
                 setBreedCounter(getBreedCooldown());
@@ -288,7 +288,7 @@ void Sheep::move(Grid* nextGrid) {
             // code block
             // should not reach here
             return;
-            std::cout<<"Error!\n";
+            //std::cout<<"Error!\n";
             //putSelf(nextGrid,this->getX(),this->getY());
         }
     }

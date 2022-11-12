@@ -27,7 +27,9 @@ bool Animal::putAnimal(Animal* animal, Grid* nextGrid, const int x, const int y)
             return true;
         }
         else{
-            delete animal;
+            //if(this->getBoard()->getGrid()->getCell(x,y)!=nullptr){
+                delete animal;
+            //}
             //std::cout<<"Debugging message: deleted animal. \n";
             return false;
         }
