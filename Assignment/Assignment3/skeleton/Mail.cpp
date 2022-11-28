@@ -11,9 +11,10 @@ address(address), district(district), streetName(streetName), content(content), 
 // TODO: Calculate Hash Address
 void Mail::hashAddress()
 {
+    long long address_hash = 0;
     //std::cout<<address<<" with length: "<<address.length()<<"\n";
-    for (int k=0; k<address.length();k++){
-        addressHash += address[k]*(k+1);
+    for (uint32_t k=0; k<address.length();k++){
+        address_hash += address[k]*(k+1);
         //std::cout<<"The ASCII value of "<<address[k]<<" is "<<address[k]+1-1<<"\tThe multiplicity is "<<k+1<<"\n";
         //std::cout<<"address[k]*(k+1) is "<<address[k]*(k+1)<<"\tCumulative hashvalue is: "<<addressHash<<"\n";
         //std::cout<<"\n";
@@ -22,17 +23,21 @@ void Mail::hashAddress()
     //std::cout<<"Hash value is: "<<addressHash<<"\n";
     
     //std::cout<<content<<" with length: "<<content.length()<<"\n";
-    for (int k=0; k<content.length();k++){
-        addressHash += content[k]*(k+1);
+    for (uint32_t k=0; k<content.length();k++){
+        address_hash += content[k]*(k+1);
         //std::cout<<"The ASCII value of "<<content[k]<<" is "<<content[k]+1-1<<"\tThe multiplicity is "<<k+1<<"\n";
         //std::cout<<"address[k]*(k+1) is "<<content[k]*(k+1)<<"\tCumulative hashvalue is: "<<addressHash<<"\n";
         //std::cout<<"\n";
     }
+    
+    address_hash = address_hash % HASH_MODULO;
+    addressHash = static_cast<int>(address_hash);
+    //addressHash = address_hash;
     // Check value of addressHash
     //std::cout<<"Hash value is: "<<addressHash<<"\n";
 
     // Overflow? 
-    return;
+
 }
 
 // DO NOT TOUCH REST OF THE FUNCTIONS!

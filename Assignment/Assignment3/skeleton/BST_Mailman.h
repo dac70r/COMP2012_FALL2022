@@ -12,7 +12,7 @@ const int MAX_NUM_MAILS = 100;
 
 class BST_Mailman;
 
-class BST_Mailman_Node
+class BST_Mailman_Node // BSTnode
 {
     friend class BST_Mailman;
 
@@ -38,7 +38,7 @@ public:
 };
 
 
-class BST_Mailman
+class BST_Mailman // BST
 {
     friend class BST_Mailman_Node;
 
