@@ -61,7 +61,7 @@ BST_Mailman * BST_Mailman_Node::getLeftBST() const
 void BST_Mailman::addMail(Mail *mail)
 {
     //std::cout<<"\t\t\tAdded mail in BST_Mailman::addMail\n";
-
+    
     if(root == nullptr){
         //std::cout<<"\troot == nullptr in BST_Mailman::addMail\n";
         root = new BST_Mailman_Node(mail);
@@ -103,8 +103,10 @@ void BST_Mailman::addMail(Mail *mail)
 void BST_Mailman_Node::addMail(Mail *mail)
 {
     //std::cout<<"\t\t\t\tAdded mail in BST_Mailman_Node::addMail\n";
-    //std::cout<<currentMailsStored;
+    //std::cout<<"Current Mail: "<<currentMailsStored<<"\n";
     mailPtr[currentMailsStored]=mail;
+    currentMailsStored++;
+    //print();
     /*
     std::cout<<"\t\t\t\t\t------------\n";
     for(int k=0; k<MAX_NUM_MAILS;k++){
@@ -130,7 +132,7 @@ bool BST_Mailman::remove(int id, std::string streetName)
 {
     Mail* remove_mail = find(id,streetName);
     if(remove_mail){
-        //std::cout<<"\t\t\tMail found! Time to remove\n";
+        //std::cout<<"\t\t\tMail found inside mailman! Time to remove\n";
         return root->remove(id);
     }
 
@@ -140,17 +142,36 @@ bool BST_Mailman::remove(int id, std::string streetName)
 
 bool BST_Mailman_Node::remove(int id)
 {
+    //std::cout<<"BST_Mailman_Node remove called\n";   
     Mail* to_be_removed_mail = find(id);
     if(to_be_removed_mail){
-        //std::cout<<"\t\t\tMail with id: "<<id<<" is removed\n";
-        delete mailPtr[to_be_removed_mail->getAddressHash()]; 
-        mailPtr[to_be_removed_mail->getAddressHash()] = nullptr;
+        //std::cout<<"\t\t\tMail with id: "<<id<<" is being removed\n";
+        //print();
+        //std::cout<<"Print stopped\n";
+        //std::cout<<"Current number of mails: "<<currentMailsStored<<"\n";
+        for(int k=0; k<MAX_NUM_MAILS;k++){
+        if(mailPtr[k]!=nullptr){
+            if(mailPtr[k]->getId()==id){
+                //std::cout<<"\t\t\tID found! It is: "<<id<<"\n";
+                //mailPtr[k]->printMail();
+                delete mailPtr[k];
+                mailPtr[k] = nullptr;
+                //currentMailsStored = currentMailsStored-1;
+            }
+        }
+    }
+        //delete mailPtr[currentMailsStored-1]; incorrect
+        //mailPtr[currentMailsStored-1] = nullptr;
+        //std::cout<<"Finish deleting\n";
+        //to_be_removed_mail = nullptr;
+        //currentMailsStored -= 1;
         return true;
     }
 
-    else
+    else{
         //std::cout<<"Could not find a Mail with id: "<<id<<"\n";
         return false; 
+    }
 }
 
 // TODO: Find a mail item, given its street name and ID
@@ -159,6 +180,8 @@ Mail * BST_Mailman::find(int id, std::string streetName)
     //std::cout<<"\t\tBST_Mailman::find called\n";
     if(root != nullptr){
         if(this->root->getStreetName() == streetName){
+            //std::cout<<"\t\t"<<root->getStreetName()<<"\n";
+            //std::cout<<"\t\t"<<streetName<<"\n";
             //std::cout<<"\t\tStreet Name found!\n";
             return root->find(id);
         }
@@ -174,7 +197,7 @@ Mail * BST_Mailman::find(int id, std::string streetName)
             } 
         }
 
-        else
+        else{
             //std::cout<<"\t\tStreet Name is bigger!\n"; 
             if(root->right){
                 return root->right->find(id,streetName);
@@ -182,7 +205,8 @@ Mail * BST_Mailman::find(int id, std::string streetName)
             else{
                 //std::cout<<"\t\tStreet Name not found!\n"; 
                 return nullptr;
-         } 
+            }
+        } 
     }
 
     return nullptr;
@@ -236,6 +260,7 @@ Mail *BST_Mailman_Node::find(int id)
         if(mailPtr[k]!=nullptr){
             if(mailPtr[k]->getId()==id){
                 //std::cout<<"\t\t\tID found! It is: "<<id<<"\n";
+                //mailPtr[k]->printMail();
                 return mailPtr[k];
             }
         }

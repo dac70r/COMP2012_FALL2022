@@ -72,7 +72,7 @@ Mail *BST_PostOffice::find(District dist, int id, std::string streetName)
         else if(dist < root->getDistrict()){
             //std::cout<<"District is smaller!\n";
             if(root->left){
-                return root->left->root->find(id,streetName);
+                return root->left->find(dist,id,streetName);
             }
             else{
                 //std::cout<<"District not found!\n"; 
@@ -83,7 +83,7 @@ Mail *BST_PostOffice::find(District dist, int id, std::string streetName)
         else
             //std::cout<<"District is bigger!\n"; 
             if(root->right){
-                return root->right->root->find(id,streetName);
+                return root->right->find(dist,id,streetName);
             }
             else{
                 //std::cout<<"District not found!\n"; 
@@ -106,7 +106,7 @@ Mail *BST_PostOffice_Node::find(int id, std::string streetName)
             return return_mail;
         }
     }
-    //std::cout<<"\tBST_Mailman_Node::find No ID found!\n";
+   // std::cout<<"\tBST_Mailman_Node::find No ID found!\n";
     return nullptr; 
 }
 
@@ -117,8 +117,8 @@ bool BST_PostOffice::remove(District dist, int id, std::string streetName)
 {
     //std::cout<<"BST_PostOffice::remove called\n";
     if(root){
-        //std::cout<<"BST_PostOffice::remove called"<<dist<<"\n";
-        //std::cout<<"BST_PostOffice::remove called"<<root->getDistrict()<<"\n";
+        //std::cout<<"BST_PostOffice::remove called: "<<dist<<"\n";
+        //std::cout<<"BST_PostOffice::remove called: "<<root->getDistrict()<<"\n";
         if(root->getDistrict() == dist){
             //std::cout<<"BST_PostOffice::remove called -> same district\n";
             return root->remove(id,streetName);
@@ -126,7 +126,7 @@ bool BST_PostOffice::remove(District dist, int id, std::string streetName)
         else if(dist < root->getDistrict()){
             if(root->left){
                 //std::cout<<"BST_PostOffice::remove called -> dist < district\n";
-                root->left->remove(dist, id,streetName);
+                root->left->remove(dist, id, streetName);
             }
             else{
                 return false;
@@ -163,11 +163,18 @@ bool BST_PostOffice_Node::remove(int id, std::string streetName)
     //std::cout<<"BST_PostOffice_Node::remove called\n";
     int value = 0;
     Mail* remove_mail = find(id,streetName);
+    //std::cout<<"BST_PostOffice_Node::remove Find done\n";
+
     if(remove_mail){
         //std::cout<<"\t\t\tMail found! Time to remove\n";
         value = remove_mail->getAddressHash();
+        //std::cout<<remove_mail->getAddressHash();
+        //std::cout<<remove_mail->getStreetName();
+        //std::cout<<remove_mail->getAddress();
+        //mailman[value].printInOrder();
+        //std::cout<<"End\n";
         return mailman[value].remove(id,streetName);
-        return true;
+        //return true;
     }
 
     //std::cout<<"Didn't find mail\n";    
@@ -334,23 +341,27 @@ void BST_PostOffice::printMailman(District district, int i, printType type) cons
 void BST_PostOffice_Node::printMailman(int i, printType type) const
 {
     //std::cout<<"\tBST_PostOffice_Node::printMailman called\n";
-    if(type == inorder){
-        for(int k=0; k<HASH_MODULO;k++){
-            mailman[k].printInOrder();
-        }   
+    if(i>=0 && i<10){
+        if(type == inorder){
+            for(int k=0; k<HASH_MODULO;k++){
+                mailman[k].printInOrder();
+            }   
+        }
+        else if(type == postorder){
+            for(int k=0; k<HASH_MODULO;k++){
+                mailman[k].printPostOrder();
+            }   
+        }
+        else if(type == preorder){
+            for(int k=0; k<HASH_MODULO;k++){
+                mailman[k].printPreOrder();
+            }   
+        }
+        else
+            return; 
+
     }
-    else if(type == postorder){
-        for(int k=0; k<HASH_MODULO;k++){
-            mailman[k].printPostOrder();
-        }   
-    }
-    else if(type == preorder){
-        for(int k=0; k<HASH_MODULO;k++){
-            mailman[k].printPreOrder();
-        }   
-    }
-    else
-        return; 
+    
 }
 
 // TODO: Other print functions.
